@@ -1,0 +1,69 @@
+---
+title: 'Lab Exercise #1'
+author: "Marivic"
+date: "2024-02-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+library(rvest)
+library(dplyr)
+library(polite)
+library(stringr)
+
+url <- "https://www.amazon.com/gp/browse.html?node=21221447011&ref_=nav_em_sh_pet_0_2_7_12"
+
+session <- bow(url,user_agent = "Educational Purposes")
+session
+
+```
+
+
+```{r}
+url1 <- "https://www.amazon.com/dp/B073WYP317/ref=s9_acsd_al_bw_c2_x_0_i?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=merchandised-search-4&pf_rd_r=3B3D3ZVWDK0D7QQHTATV&pf_rd_t=101&pf_rd_p=5536d00e-c1b1-48c4-9b10-130a9be50a29&pf_rd_i=21221447011"
+
+#ProductName
+catFeeder <- read_html(url1)
+
+product <- catFeeder %>%
+  html_nodes("h1") %>%
+  html_text()
+
+catFeeder
+```
+
+
+```{r}
+#ProductPrice
+price <- catFeeder %>%
+  html_nodes("h1") %>%
+  html_text()
+  
+price
+```
+
+
+```{r}
+#ProductRatings
+rating <- catFeeder %>%
+  html_nodes("h1") %>%
+  html_text()
+  
+rating
+```
+
+
+```{r}
+#ProductNo.OfReviews
+reviews <- catFeeder %>%
+  html_nodes("h1") %>%
+  html_text()
+
+reviews
+```
