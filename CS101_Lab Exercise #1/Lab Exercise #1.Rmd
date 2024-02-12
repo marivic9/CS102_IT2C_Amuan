@@ -1,69 +1,403 @@
 ---
 title: 'Lab Exercise #1'
-author: "Marivic"
+author: "Marivic T. Amuan"
 date: "2024-02-08"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+100 products
 
 ```{r}
-
 library(rvest)
 library(dplyr)
 library(polite)
 library(stringr)
 
-url <- "https://www.amazon.com/gp/browse.html?node=21221447011&ref_=nav_em_sh_pet_0_2_7_12"
+url <- "https://www.amazon.com/s?i=electronics-intl-ship&bbn=16225009011&rh=n%3A16225009011%2Cn%3A281407&page=2&qid=1707742402&ref=sr_pg_1"
 
 session <- bow(url,user_agent = "Educational Purposes")
 session
-
 ```
 
 
 ```{r}
-url1 <- "https://www.amazon.com/dp/B073WYP317/ref=s9_acsd_al_bw_c2_x_0_i?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=merchandised-search-4&pf_rd_r=3B3D3ZVWDK0D7QQHTATV&pf_rd_t=101&pf_rd_p=5536d00e-c1b1-48c4-9b10-130a9be50a29&pf_rd_i=21221447011"
+library(rvest)
+library(stringr)
+library(httr2) 
+library(dplyr)
+   
+    session_1 <- session("https://www.amazon.com/s?i=electronics-intl-ship&bbn=16225009011&rh=n%3A16225009011%2Cn%3A281407&page=2&qid=1707742402&ref=sr_pg_1")
+  
+```
+
+```{r}
 
 #ProductName
-catFeeder <- read_html(url1)
-
-product <- catFeeder %>%
-  html_nodes("h1") %>%
+product50 <- session_1 %>%
+  html_nodes("h2") %>%
   html_text()
 
-catFeeder
+fifthy <- product50[1:24]
+fifthy
+
 ```
 
 
 ```{r}
 #ProductPrice
-price <- catFeeder %>%
-  html_nodes("h1") %>%
+price <- session_1 %>%
+  html_nodes("span.a-price") %>%
   html_text()
-  
-price
+
+
+pricing <- str_extract(price[1:24], "\\$[0-9.]+")
+print(pricing)
 ```
 
 
 ```{r}
 #ProductRatings
-rating <- catFeeder %>%
-  html_nodes("h1") %>%
+rating <- session_1 %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
   html_text()
-  
-rating
+
+ratings<- rating[1:24]
+ratings
 ```
 
 
 ```{r}
 #ProductNo.OfReviews
-reviews <- catFeeder %>%
-  html_nodes("h1") %>%
+review <- session_1 %>%
+  html_nodes("span.a-icon-alt") %>%
   html_text()
 
+reviews<- review[1:24]
 reviews
 ```
+
+Frame for 24 products
+```{r}
+frame1 <- data.frame(
+  Name = fifthy, 
+  Price = pricing, 
+  Rating = ratings, 
+  Reviews = reviews
+)
+frame1
+``` 
+
+For 24 products 
+
+```{r}
+library(rvest)
+library(stringr)
+library(httr2) 
+library(dplyr)
+
+url2 <- "https://www.amazon.com/s?i=specialty-aps&bbn=16225009011&rh=n%3A%2116225009011%2Cn%3A281407&ref=nav_em__nav_desktop_sa_intl_accessories_and_supplies_0_2_5_2"
+
+session <- bow(url2,user_agent = "Educational Purposes")
+session
+```
+
+
+```{r}
+
+session_2 <- session("https://www.amazon.com/s?i=specialty-aps&bbn=16225009011&rh=n%3A%2116225009011%2Cn%3A281407&ref=nav_em__nav_desktop_sa_intl_accessories_and_supplies_0_2_5_2")
+
+```
+
+
+```{r}
+#ProductName
+product502 <- session_2 %>%
+  html_nodes("h2") %>%
+  html_text()
+
+fifthy2 <- product502[1:24]
+fifthy2
+
+```
+
+```{r}
+#ProductPrice
+price2 <- session_2 %>%
+  html_nodes("span.a-price") %>%
+  html_text()
+
+
+pricing2 <- str_extract(price2[1:24], "\\$[0-9.]+")
+print(pricing2)
+```
+
+```{r}
+
+#ProductRatings
+rating2 <- session_2 %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text()
+
+ratings2<- rating2[1:24]
+ratings2
+```
+
+```{r}
+#ProductNo.OfReviews
+review2 <- session_2 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews2<- review2[1:24]
+reviews2
+```
+
+```{r}
+frame2 <- data.frame(
+  Name = fifthy2, 
+  Price = pricing2, 
+  Rating = ratings2, 
+  Reviews = reviews2
+)
+frame2
+```
+
+For 24 = 82 products
+```{r}
+library(rvest)
+library(stringr)
+library(httr2) 
+library(dplyr)
+
+url3 <- "https://www.amazon.com/s?i=specialty-aps&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&ref=nav_em__nav_desktop_sa_intl_computer_components_0_2_6_3"
+
+session <- bow(url3,user_agent = "Educational Purposes")
+session
+```
+
+
+```{r}
+
+  
+    session_3 <- session("https://www.amazon.com/s?i=specialty-aps&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&ref=nav_em__nav_desktop_sa_intl_computer_components_0_2_6_3")
+ 
+```
+
+
+```{r}
+#ProductName
+product503 <- session_3 %>%
+  html_nodes("h2") %>%
+  html_text()
+
+fifthy3 <- product503[1:24]
+fifthy3
+
+```
+
+```{r}
+#ProductPrice
+price3 <- session_3 %>%
+  html_nodes("span.a-price") %>%
+  html_text()
+
+
+pricing3 <- str_extract(price3[1:24], "\\$[0-9.]+")
+print(pricing3)
+```
+
+```{r}
+
+#ProductRatings
+rating3 <- session_3 %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text()
+
+ratings3<- rating3[1:24]
+ratings3
+```
+
+```{r}
+#ProductNo.OfReviews
+review3 <- session_3 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews3<- review3[1:24]
+reviews3
+```
+
+```{r}
+frame3 <- data.frame(
+  Name = fifthy3, 
+  Price = pricing3, 
+  Rating = ratings3, 
+  Reviews = reviews3
+)
+frame3
+```
+
+For 18 products 
+
+```{r}
+library(rvest)
+library(stringr)
+library(httr2) 
+library(dplyr)
+
+url4 <- "https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=2&qid=1707745151&ref=sr_pg_1"
+
+session <- bow(url4,user_agent = "Educational Purposes")
+session
+```
+
+
+```{r}
+
+    session_4 <- session("https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=2&qid=1707745151&ref=sr_pg_1")
+  
+```
+
+
+```{r}
+#ProductName
+product504 <- session_4 %>%
+  html_nodes("h2") %>%
+  html_text()
+
+fifthy4 <- product504[1:24]
+fifthy4
+
+```
+
+```{r}
+#ProductPrice
+price4 <- session_4 %>%
+  html_nodes("span.a-price") %>%
+  html_text()
+
+
+pricing4 <- str_extract(price4[1:24], "\\$[0-9.]+")
+print(pricing4)
+```
+
+```{r}
+
+#ProductRatings
+rating4 <- session_4 %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text()
+
+ratings4<- rating4[1:24]
+ratings4
+```
+
+```{r}
+#ProductNo.OfReviews
+review4 <- session_4 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews4<- review4[1:24]
+reviews4
+```
+
+```{r}
+frame4 <- data.frame(
+  Name = fifthy4, 
+  Price = pricing4, 
+  Rating = ratings4, 
+  Reviews = reviews4
+)
+frame4
+```
+
+
+Add for 4 products
+For 18 products 
+```{r}
+
+library(rvest)
+library(stringr)
+library(httr2) 
+library(dplyr)
+
+url5 <- "https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=3&qid=1707748231&ref=sr_pg_2"
+
+session <- bow(url5,user_agent = "Educational Purposes")
+session
+```
+
+
+```{r}
+    session_5 <- session("https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=3&qid=1707748231&ref=sr_pg_2")
+```
+
+
+```{r}
+#ProductName
+product505 <- session_5 %>%
+  html_nodes("h2") %>%
+  html_text()
+
+fifthy5 <- product505[1:4]
+fifthy5
+
+```
+
+```{r}
+#ProductPrice
+price5 <- session_5 %>%
+  html_nodes("span.a-price") %>%
+  html_text()
+
+
+pricing5 <- str_extract(price5[1:4], "\\$[0-9.]+")
+print(pricing5)
+```
+
+```{r}
+
+#ProductRatings
+rating5 <- session_5 %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text()
+
+ratings5<- rating5[1:4]
+ratings5
+```
+
+```{r}
+#ProductNo.OfReviews
+review5 <- session_5 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews5<- review5[1:4]
+reviews5
+```
+
+```{r}
+frame5 <- data.frame(
+  Name = fifthy5, 
+  Price = pricing5, 
+  Rating = ratings5, 
+  Reviews = reviews5
+)
+frame5
+```
+
+```{r}
+df<- rbind(frame1, frame2, frame3, frame4, frame5)
+print(df)
+```
+```
+
+
+
+
