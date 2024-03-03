@@ -1,0 +1,91 @@
+---
+title: "Untitled"
+author: "Marivic"
+date: "2024-03-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(polite)
+library(stringr)
+library(httr2)
+
+url <- "https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0"
+
+session <- bow(url,user_agent = "Educational Purposes")
+session
+```
+Products
+```{r}
+session <- session ("https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0")
+
+products <- session %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+  
+productNames <- products[1:50]
+productNames
+```
+Title of Reviews
+```{r}
+session1 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
+
+products1 <- session1 %>%
+  html_nodes("span") %>%
+  html_text()
+  
+productTitleReviews <- products1[2:30]
+productTitleReviews
+```
+Reviewer
+```{r}
+session2 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
+
+products2 <- session2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+  
+productReviewers <- products2[2:30]
+productReviewers
+```
+Date of Review
+```{r}
+session3 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
+
+products3 <- session3 %>%
+  html_nodes("span.a-size-base.a-color-secondary.review-date") %>%
+  html_text()
+  
+productDateReviews <- products3[2:30]
+productDateReviews
+```
+Rating
+```{r}
+session4 <- session ("https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0")
+
+products4 <- session4 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+  
+productRatings <- products4[1:30]
+productRatings
+```
+Type of Review (Verified or Not)
+```{r}
+session4 <- session ("https://www.amazon.com.au/product-reviews/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1_cr/356-5645969-7697568")
+
+products5 <- session4 %>%
+  html_nodes("span") %>%
+  html_text()
+  
+productTypeReview <- products5[1:30]
+productTypeReview
+```
+
+
