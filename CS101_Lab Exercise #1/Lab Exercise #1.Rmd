@@ -5,399 +5,626 @@ date: "2024-02-08"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-100 products
 
 ```{r}
 library(rvest)
 library(dplyr)
 library(polite)
 library(stringr)
+library(httr)
 
-url <- "https://www.amazon.com/s?i=electronics-intl-ship&bbn=16225009011&rh=n%3A16225009011%2Cn%3A281407&page=2&qid=1707742402&ref=sr_pg_1"
+url <- "https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1"
 
-session <- bow(url,user_agent = "Educational Purposes")
+session <- bow(url, user_agent = "Educational Purposes")
 session
 ```
 
-
+100 Products
+20 - 1st Session Products
 ```{r}
-library(rvest)
-library(stringr)
-library(httr2) 
-library(dplyr)
-   
-    session_1 <- session("https://www.amazon.com/s?i=electronics-intl-ship&bbn=16225009011&rh=n%3A16225009011%2Cn%3A281407&page=2&qid=1707742402&ref=sr_pg_1")
+session1 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+products <- firstSession %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
   
+name <- products[1:20]
+name
 ```
-
+20 Price
 ```{r}
+session2<- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
 
-#ProductName
-product50 <- session_1 %>%
-  html_nodes("h2") %>%
+price <- session2 %>%
+  html_nodes("span.p13n-sc-price") %>%
   html_text()
 
-fifthy <- product50[1:24]
-fifthy
-
-```
-
-
+price1 <- price[1:20]
+price1
+```   
+20 Ratings
 ```{r}
-#ProductPrice
-price <- session_1 %>%
-  html_nodes("span.a-price") %>%
+session3 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+rating <- session3 %>%
+  html_nodes("span.a-size-small") %>%
   html_text()
 
-
-pricing <- str_extract(price[1:24], "\\$[0-9.]+")
-print(pricing)
+rating1 <- rating[1:20]
+rating1
 ```
-
-
+20 Reviews
 ```{r}
-#ProductRatings
-rating <- session_1 %>%
-  html_nodes("span.a-size-base.s-underline-text") %>%
-  html_text()
+session4 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
 
-ratings<- rating[1:24]
-ratings
-```
-
-
-```{r}
-#ProductNo.OfReviews
-review <- session_1 %>%
+review <- scrape(session) %>%
   html_nodes("span.a-icon-alt") %>%
   html_text()
 
-reviews<- review[1:24]
-reviews
+review2 <- review[1:20]
+review2
 ```
-
-Frame for 24 products
+First DataFrame (20 Products, Price, Ratings, and Reviews)
 ```{r}
-frame1 <- data.frame(
-  Name = fifthy, 
-  Price = pricing, 
-  Rating = ratings, 
-  Reviews = reviews
+firstDataframe <- data.frame(
+  Products = name,
+  Price = price1,
+  Rating = rating1,
+  Reviews = review2
 )
-frame1
-``` 
-
-For 24 products 
-
-```{r}
-library(rvest)
-library(stringr)
-library(httr2) 
-library(dplyr)
-
-url2 <- "https://www.amazon.com/s?i=specialty-aps&bbn=16225009011&rh=n%3A%2116225009011%2Cn%3A281407&ref=nav_em__nav_desktop_sa_intl_accessories_and_supplies_0_2_5_2"
-
-session <- bow(url2,user_agent = "Educational Purposes")
-session
+firstDataframe
 ```
 
 
+
+
+20 - 2nd Session Products
 ```{r}
+session5 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
 
-session_2 <- session("https://www.amazon.com/s?i=specialty-aps&bbn=16225009011&rh=n%3A%2116225009011%2Cn%3A281407&ref=nav_em__nav_desktop_sa_intl_accessories_and_supplies_0_2_5_2")
-
-```
-
-
-```{r}
-#ProductName
-product502 <- session_2 %>%
-  html_nodes("h2") %>%
+products1 <- session5 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
 
-fifthy2 <- product502[1:24]
-fifthy2
-
+name1 <- products1[1:20]
+name1
 ```
-
+20 Price
 ```{r}
-#ProductPrice
-price2 <- session_2 %>%
-  html_nodes("span.a-price") %>%
+session6 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
+
+price2 <-session6 %>%
+  html_nodes("span.p13n-sc-price") %>%
   html_text()
 
-
-pricing2 <- str_extract(price2[1:24], "\\$[0-9.]+")
-print(pricing2)
+price3 <- price2[1:20]
+price3
 ```
-
+20 Ratings
 ```{r}
+session7 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
 
-#ProductRatings
-rating2 <- session_2 %>%
-  html_nodes("span.a-size-base.s-underline-text") %>%
+rating2 <- session7 %>%
+  html_nodes("span.a-size-small") %>%
   html_text()
-
-ratings2<- rating2[1:24]
-ratings2
-```
-
-```{r}
-#ProductNo.OfReviews
-review2 <- session_2 %>%
-  html_nodes("span.a-icon-alt") %>%
-  html_text()
-
-reviews2<- review2[1:24]
-reviews2
-```
-
-```{r}
-frame2 <- data.frame(
-  Name = fifthy2, 
-  Price = pricing2, 
-  Rating = ratings2, 
-  Reviews = reviews2
-)
-frame2
-```
-
-For 24 = 82 products
-```{r}
-library(rvest)
-library(stringr)
-library(httr2) 
-library(dplyr)
-
-url3 <- "https://www.amazon.com/s?i=specialty-aps&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&ref=nav_em__nav_desktop_sa_intl_computer_components_0_2_6_3"
-
-session <- bow(url3,user_agent = "Educational Purposes")
-session
-```
-
-
-```{r}
-
   
-    session_3 <- session("https://www.amazon.com/s?i=specialty-aps&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&ref=nav_em__nav_desktop_sa_intl_computer_components_0_2_6_3")
- 
+rating3 <-rating2[1:20]
+rating3
 ```
-
-
+20 Reviews
 ```{r}
-#ProductName
-product503 <- session_3 %>%
-  html_nodes("h2") %>%
-  html_text()
+session8 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
 
-fifthy3 <- product503[1:24]
-fifthy3
-
-```
-
-```{r}
-#ProductPrice
-price3 <- session_3 %>%
-  html_nodes("span.a-price") %>%
-  html_text()
-
-
-pricing3 <- str_extract(price3[1:24], "\\$[0-9.]+")
-print(pricing3)
-```
-
-```{r}
-
-#ProductRatings
-rating3 <- session_3 %>%
-  html_nodes("span.a-size-base.s-underline-text") %>%
-  html_text()
-
-ratings3<- rating3[1:24]
-ratings3
-```
-
-```{r}
-#ProductNo.OfReviews
-review3 <- session_3 %>%
+review4 <- session8 %>%
   html_nodes("span.a-icon-alt") %>%
   html_text()
 
-reviews3<- review3[1:24]
-reviews3
+review3 <- review4[1:20]
+review3
 ```
-
+2nd DataFrame (20 Products, Price, Ratings, and Reviews)
 ```{r}
-frame3 <- data.frame(
-  Name = fifthy3, 
-  Price = pricing3, 
-  Rating = ratings3, 
-  Reviews = reviews3
+SecondDataFrame <- data.frame(
+  Products = name1,
+  Price = price3,
+  Ratings = rating3,
+  Reviews = review3
 )
-frame3
-```
-
-For 18 products 
-
-```{r}
-library(rvest)
-library(stringr)
-library(httr2) 
-library(dplyr)
-
-url4 <- "https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=2&qid=1707745151&ref=sr_pg_1"
-
-session <- bow(url4,user_agent = "Educational Purposes")
-session
+SecondDataFrame
 ```
 
 
+
+20 - 3rd Session Products
 ```{r}
+session9 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_nav_beauty_2_5150070051")
 
-    session_4 <- session("https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=2&qid=1707745151&ref=sr_pg_1")
-  
-```
-
-
-```{r}
-#ProductName
-product504 <- session_4 %>%
-  html_nodes("h2") %>%
+products2 <- session9 %>% 
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
 
-fifthy4 <- product504[1:24]
-fifthy4
-
+name2 <- products2[1:20]
+name2 
 ```
-
+20 Price
 ```{r}
-#ProductPrice
-price4 <- session_4 %>%
-  html_nodes("span.a-price") %>%
+session10 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_nav_beauty_2_5150070051")
+
+price3 <- session10 %>%
+  html_nodes("span.p13n-sc-price") %>%
   html_text()
 
 
-pricing4 <- str_extract(price4[1:24], "\\$[0-9.]+")
-print(pricing4)
+price4 <-price3[1:20]
+price4
 ```
-
+20 Ratings
 ```{r}
+session11 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_nav_beauty_2_5150070051")
 
-#ProductRatings
-rating4 <- session_4 %>%
-  html_nodes("span.a-size-base.s-underline-text") %>%
+ratings3 <- session11 %>%
+  html_nodes("span.a-size-small") %>%
   html_text()
 
-ratings4<- rating4[1:24]
-ratings4
+rating4 <- ratings3[1:20]
+rating4
 ```
-
+20 Reviews
 ```{r}
-#ProductNo.OfReviews
-review4 <- session_4 %>%
+session12 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_nav_beauty_2_5150070051")
+
+reviews3 <- session12 %>%
   html_nodes("span.a-icon-alt") %>%
   html_text()
 
-reviews4<- review4[1:24]
+reviews4 <- reviews3[1:20]
 reviews4
 ```
-
+Third DataFrame (20 Products, Price, Ratings, and Reviews)
 ```{r}
-frame4 <- data.frame(
-  Name = fifthy4, 
-  Price = pricing4, 
-  Rating = ratings4, 
-  Reviews = reviews4
+ThirdDataFrame <- data.frame(
+  Products = name2,
+  Price = price4,
+  Ratings = rating4,
+  Review = reviews4
 )
-frame4
+ThirdDataFrame
 ```
 
 
-Add for 4 products
-For 18 products 
+
+
+20 - 4th Session Products
 ```{r}
+session13 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
 
-library(rvest)
-library(stringr)
-library(httr2) 
-library(dplyr)
-
-url5 <- "https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=3&qid=1707748231&ref=sr_pg_2"
-
-session <- bow(url5,user_agent = "Educational Purposes")
-session
-```
-
-
-```{r}
-    session_5 <- session("https://www.amazon.com/s?i=computers-intl-ship&bbn=16225007011&rh=n%3A16225007011%2Cn%3A193870011&page=3&qid=1707748231&ref=sr_pg_2")
-```
-
-
-```{r}
-#ProductName
-product505 <- session_5 %>%
-  html_nodes("h2") %>%
+products3 <- session13 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
 
-fifthy5 <- product505[1:4]
-fifthy5
-
+name3 <- products3[1:20]
+name3
 ```
-
+20 Price
 ```{r}
-#ProductPrice
-price5 <- session_5 %>%
-  html_nodes("span.a-price") %>%
+session14 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
+
+price4 <- session14 %>%
+  html_nodes("span.p13n-sc-price") %>%
   html_text()
 
-
-pricing5 <- str_extract(price5[1:4], "\\$[0-9.]+")
-print(pricing5)
+price5 <- price4[1:20]
+price5
 ```
-
+20 Ratings
 ```{r}
+session15 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
 
-#ProductRatings
-rating5 <- session_5 %>%
-  html_nodes("span.a-size-base.s-underline-text") %>%
+ratings4 <- session15 %>%
+  html_nodes("span.a-size-small") %>%
   html_text()
 
-ratings5<- rating5[1:4]
+ratings5 <- ratings4[1:20]
 ratings5
 ```
-
+20 Reviews
 ```{r}
-#ProductNo.OfReviews
-review5 <- session_5 %>%
+session16 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150108051/ref=zg_bs_pg_2_beauty?ie=UTF8&pg=2")
+
+reviews5 <- session16 %>%
   html_nodes("span.a-icon-alt") %>%
   html_text()
 
-reviews5<- review5[1:4]
-reviews5
+reviews6 <- reviews5[1:20]
+reviews6
 ```
-
+Fourth DataFrame (20 Products, Price, Ratings, and Reviews)
 ```{r}
-frame5 <- data.frame(
-  Name = fifthy5, 
-  Price = pricing5, 
-  Rating = ratings5, 
-  Reviews = reviews5
+FourthDataFrame <- data.frame(
+  Products = name3,
+  Price = price5,
+  Ratings = ratings5,
+  Reviews = reviews6
 )
-frame5
+FourthDataFrame
+```
+
+
+
+
+20 - 5th Session Products
+```{r}
+fifthSession <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150256051/ref=zg_bs_nav_beauty_3_5150108051")
+
+products5 <- fifthSession %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+
+name4 <- products5[1:20]
+name4
+```
+20 Price
+```{r}
+session17 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150256051/ref=zg_bs_nav_beauty_3_5150108051")
+
+price5 <- session17 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+price6 <- price5[1:20]
+price6
+```
+20 Ratings
+```{r}
+session18 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150256051/ref=zg_bs_nav_beauty_3_5150108051")
+
+ratings6 <- session18 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+ratings7 <- ratings6[1:20]
+ratings7
+```
+20 Reviews
+```{r}
+session19 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150256051/ref=zg_bs_nav_beauty_3_5150108051")
+
+reviews7 <- session19 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews8 <- reviews7[1:20]
+reviews8
+```
+20 Fifth DataFrame
+```{r}
+FifthDataFrame <- data.frame(
+  Products = name4,
+  Price = price6,
+  Ratings = ratings7,
+  Reviews = reviews8
+)
+FifthDataFrame
+```
+Binding the dataframes.
+```{r}
+SixthDataFrame <- bind_rows(firstDataframe,SecondDataFrame,thirdDataFrame,fourthDataFrame,fifthDataFrame)
+SixthDataFrame
+```
+CSV File = 100 Products
+```{r}
+write.csv(df,file = "First 100 Products.csv")
+```
+
+
+
+
+2nd 100 Products
+```{r}
+url2 <- "https://www.amazon.com.au/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0"
+
+session <- bow(url2, user_agent = "Educational Purposes")
+session
+```
+20 - 1st Session Products
+```{r}
+session20 <- session ("https://www.amazon.com.au/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0")
+
+products1 <- session20 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+  
+prod1st <- products1[1:20]
+prod1st
+```
+20 Price
+```{r}
+session21 <- session ("https://www.amazon.com.au/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0")
+
+price2nd <- session21 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+price10 <- price2nd[1:20]
+price10
+```
+20 Ratings
+```{r}
+session22 <- session ("https://www.amazon.com.au/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0")
+
+rating1st <- session22 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+rating10 <- rating1st[1:20]
+rating10
+```
+20 Reviews
+```{r}
+session23 <- session ("https://www.amazon.com.au/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0")
+
+review1st <- session23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+review10 <- review1st[1:20]
+review10
+```
+2nd Session First's DataFrame (20 Products, Price, Ratings, and Reviews)
+```{r}
+SeventhDataFrame <- data.frame(
+  Products = prod1st ,
+  Price = price10,
+  Rating = rating10,
+  Reviews = review10
+)
+SeventhDataFrame
+```
+
+
+
+
+
+20 - 2nd Session Products
+```{r}
+session24 <- session ("https://www.amazon.com.au/gp/bestsellers/fashion/ref=zg_bs_nav_fashion_0")
+
+products2 <- session24 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+  
+prod2nd <- products2[1:20]
+prod2nd
+```
+20 Price
+```{r}
+session25 <- session ("https://www.amazon.com.au/gp/bestsellers/fashion/ref=zg_bs_nav_fashion_0")
+
+price3rd <- session25 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+prod3rd <- price3rd[1:20]
+prod3rd
+```
+20 Ratings
+```{r}
+session26 <- session ("https://www.amazon.com.au/gp/bestsellers/fashion/ref=zg_bs_nav_fashion_0")
+
+rating3rd <-  session26 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+ratings3rd <- rating3rd[1:20]
+ratings3rd
+```
+20 Reviews
+```{r}
+session27 <- session ("https://www.amazon.com.au/gp/bestsellers/fashion/ref=zg_bs_nav_fashion_0")
+
+reviews3rd <-  session27 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews3rd <- reviews3rd[1:20]
+reviews3rd
+```
+DataFrame
+```{r}
+EightDataFrame <- data.frame(
+  Products = prod2nd ,
+  Price = prod3rd,
+  Rating = ratings3rd,
+  Reviews = reviews3rd
+)
+EightDataFrame
+```
+
+
+
+
+20 - 3rd Session Products
+```{r}
+session28 <- session ("https://www.amazon.com.au/gp/bestsellers/movies-and-tv/ref=zg_bs_nav_movies-and-tv_0")
+
+products6 <-  session28 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-2_EWgCb") %>%
+  html_text()
+
+product3rd <- products6[1:20]
+product3rd
+```
+20 Price
+```{r}
+session29 <- session ("https://www.amazon.com.au/gp/bestsellers/movies-and-tv/ref=zg_bs_nav_movies-and-tv_0")
+
+price4th <- session29 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+prod4th <- price4th[1:20]
+prod4th
+```
+20 Ratings
+```{r}
+session30 <- session ("https://www.amazon.com.au/gp/bestsellers/movies-and-tv/ref=zg_bs_nav_movies-and-tv_0")
+
+rating4th <-  session30 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+ratings4th <- rating4th[1:20]
+ratings4th
+```
+20 Reviews
+```{r}
+session31 <- session ("https://www.amazon.com.au/gp/bestsellers/movies-and-tv/ref=zg_bs_nav_movies-and-tv_0")
+
+reviews4th <-  session31 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews4th <- reviews4th[1:20]
+reviews4th
+```
+Ninth Data Frame
+```{r}
+NinthDataFrame <- data.frame(
+  Products = product3rd ,
+  Price = prod4th,
+  Rating = ratings4th,
+  Reviews = reviews4th
+)
+NinthDataFrame
+```
+
+
+
+
+20 - 4th Session Products
+```{r}
+session32 <- session ("https://www.amazon.com.au/gp/bestsellers/home/ref=zg_bs_nav_home_0")
+
+products7 <-  session32 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+
+product5th <- products7[1:20]
+product5th
+```
+20 Price
+```{r}
+session33 <- session ("https://www.amazon.com.au/gp/bestsellers/home/ref=zg_bs_nav_home_0")
+
+price5th <- session33 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+price5th <- price5th[1:20]
+price5th
+```
+20  Ratings
+```{r}
+session34 <- session ("https://www.amazon.com.au/gp/bestsellers/home/ref=zg_bs_nav_home_0")
+
+rating5th <-  session34 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+ratings5th <- rating5th[1:20]
+ratings5th
+```
+20 Reviews
+```{r}
+session32 <- session ("https://www.amazon.com.au/gp/bestsellers/home/ref=zg_bs_nav_home_0")
+
+reviews5th <-  session32 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews5th <- reviews5th[1:20]
+reviews5th
+```
+Tenth DataFrame
+```{r}
+TenthDataFrame <- data.frame(
+  Products = product5th ,
+  Price = price5th,
+  Rating = ratings5th,
+  Reviews = reviews5th
+)
+TenthDataFrame
+```
+
+
+
+20 - 5th Session Products
+```{r}
+session33 <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0")
+
+products8 <-  session33 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+
+product6th <- products8[1:20]
+product6th
+```
+20 Price
+```{r}
+session34 <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0")
+
+price6th <- session34 %>%
+  html_nodes("span.p13n-sc-price") %>%
+  html_text()
+
+price6th <- price6th[1:20]
+price6th
+```
+20 Ratings
+```{r}
+session35 <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0")
+
+rating5th <-  session35 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+
+ratings6th <- rating5th[1:20]
+ratings6th
+```
+20 Reviews
+```{r}
+session36 <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0")
+
+reviews6th <-  session36 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviews7th <- reviews6th[1:20]
+reviews7th
+```
+Eleventh DataFrame
+```{r}
+EleventhDataFrame <- data.frame(
+  Products = product6th ,
+  Price = price6th,
+  Rating = ratings6th,
+  Reviews = reviews7th
+)
+EleventhDataFrame
 ```
 
 ```{r}
-df<- rbind(frame1, frame2, frame3, frame4, frame5)
-print(df)
+bind <- bind_rows(SeventhDataFrame,EightDataFrame,NinthDataFrame,TenthDataFrame,EleventhDataFrame)
+bind
 ```
+
+100 Products
+```{r}
+write.csv(bind,file = "Second 100 Products.csv")
 ```
-
-
-
-
