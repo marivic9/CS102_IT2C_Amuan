@@ -30,7 +30,7 @@ session
 ```{r}
 session1 <- session ("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
 
-products <- firstSession %>%
+products <- session1 %>%
   html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
   
@@ -72,13 +72,13 @@ review2
 ```
 First DataFrame (20 Products, Price, Ratings, and Reviews)
 ```{r}
-firstDataframe <- data.frame(
+FirstDataframe <- data.frame(
   Products = name,
   Price = price1,
-  Rating = rating1,
+  Ratings = rating1,
   Reviews = review2
 )
-firstDataframe
+FirstDataframe
 ```
 
 
@@ -192,7 +192,7 @@ ThirdDataFrame <- data.frame(
   Products = name2,
   Price = price4,
   Ratings = rating4,
-  Review = reviews4
+  Reviews = reviews4
 )
 ThirdDataFrame
 ```
@@ -314,8 +314,8 @@ FifthDataFrame
 ```
 Binding the dataframes.
 ```{r}
-SixthDataFrame <- bind_rows(firstDataframe,SecondDataFrame,thirdDataFrame,fourthDataFrame,fifthDataFrame)
-SixthDataFrame
+df <- bind_rows(FirstDataframe,SecondDataFrame,ThirdDataFrame,FourthDataFrame,FifthDataFrame)
+df
 ```
 CSV File = 100 Products
 ```{r}
@@ -627,4 +627,63 @@ bind
 100 Products
 ```{r}
 write.csv(bind,file = "Second 100 Products.csv")
+```
+
+
+
+
+
+10 PRODUCTS - PRICE, RATINGS, and REVIEWS
+```{r}
+#PRODUCTS
+session37 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+tenProd <- session37 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
+  html_text()
+
+tenProdNames <- tenProd[10:19]
+tenProdNames
+
+
+#PRICE
+session38 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+tenPrice <-session38 %>%
+  html_nodes("span.a-size-base") %>%
+  html_text()
+   
+tenPrice1 <- tenPrice[10:19]
+tenPrice1
+
+
+#RATINGS
+session39 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+tenRatings <-session39 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+   
+tenRatings <- tenRatings[10:19]
+tenRatings
+
+#REVIEWS
+session40 <- session("https://www.amazon.com.au/gp/bestsellers/beauty/5150070051/ref=zg_bs_nav_beauty_1")
+
+tenRatings <-session40 %>%
+  html_nodes("span.a-size-small") %>%
+  html_text()
+   
+tenRatings <- tenRatings[10:19]
+tenRatings
+
+tenProdDf <- data.frame(
+  Products = tenProdNames,
+  Price = tenPrice1,
+  Ratings = tenRatings,
+  Reviews = tenRatings
+)
+tenProdDf
+
+write.csv(tenProdDf, file = "10 Products (Price, Ratings, and Reviews.csv")
 ```
