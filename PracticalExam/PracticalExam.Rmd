@@ -1,0 +1,116 @@
+---
+title: "Practical Exam - Exercise #1"
+author: "Marivic Amuan"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A.LOAD THE BUILT-IN WARPBREAKS DATASET
+
+1. Find out, in a single command, which columns of warpbreaks are either numeric or
+integer. What are the data types of each column?
+
+Answer: The data types of each column are integer and factor.
+```{r}
+warpbreaks
+
+wae <- sapply(warpbreaks,function (x) paste(class (x), collapse = "/"))
+wae
+```
+
+2. How many observations does it have?
+
+ANSWER: It has 54 observations.
+```{r}
+wae2 <- nrow(warpbreaks)
+wae2
+```
+3. Is numeric a natural data type for the columns which are stored as such? Convert to
+integer when necessary.
+
+ANSWER: Yes, based on the output - the numeric shown are natural data type.
+```{r}
+warpbreaks$breaks <- (warpbreaks$breaks)
+warpbreaks$breaks
+```
+
+4. Error messages in R sometimes report the underlying type of an object rather than the
+user-level class. Derive from the following code and error message what the
+underlying type. Explain what is the error all about. Do not just copy the error
+message that was displayed.
+
+ANSWER: 
+```{r}
+
+```
+
+
+
+B. LOAD THE exampleFile.txt
+1. Read the complete file using readLines.
+```{r}
+library(readr)
+path <- ("exampleFile.txt")
+```
+
+```{r}
+read <- readLines(path)
+read
+```
+
+2. Separate the vector of lines into a vector containing comments and a vector
+containing the data. Hint: use grepl.
+```{r}
+comments <- read[grepl("^//", read)]
+comments
+
+dateLine <- read[!grepl("^//", read)]
+dateLine
+```
+
+3. Extract the date from the first comment line and display on the screen “It was created
+data.”
+```{r}
+date <- "21 May 2013"
+cat("It was created data: ", date)
+```
+
+4. Read the data into a matrix as follows.
+A. Split the character vectors in the vector containing data lines by semicolon (;)
+using strsplit.
+```{r}
+splitData <- strsplit(dateLine, ";")
+splitData
+```
+B. Find the maximum number of fields retrieved by split. Append rows that are
+shorter with NA's.
+```{r}
+maxFields <- max(sapply(splitData, length))
+maxFields
+
+row <- lapply(splitData, function(x) c(x, rep(NA, maxFields - length(x))))
+row
+```
+C. Use unlist and matrix to transform the data to row-column format.
+```{r}
+Data <- unlist(row)
+
+dataMatrix <- matrix(Data, ncol = 4, nrow= 3)
+dataMatrix
+```
+d. From comment lines 2-4, extract the names of the fields. Set these as
+colnames for the matrix you just created.
+```{r}
+fields <- comments[2:4]
+fieldNames <- gsub("//", "", fields)
+
+fieldNames
+
+rownames(dataMatrix) <- fieldNames
+print(dataMatrix)
+```
+
