@@ -102,19 +102,12 @@ read.csv("FirstMovie.csv")
 ```
 Second Movie - "Dune"
 ```{r}
-title1.2 <- movie %>%
-  html_nodes("h3.ipc-title__text") %>%
-  html_text()
-  
-title1.3 <- title[2:11]
-title1.3
-
 #Second Movie Title URL - "Dune" (User Names)
 
 url2 <- "https://www.imdb.com/title/tt1160419/reviews/?ref_=tt_ql_2"
 session <- bow(url2, user_agent = "Educational Purposes")
 
-movieTitle2 <- title1.2[3]
+movieTitle2 <- title1.3[2]
 movieTitle2
 
 #Users
@@ -151,32 +144,573 @@ review1.2
 
 #Text Reviews
 
-textReviews2 <- movie1 %>%
-  html_nodes("div.text.show-more__control.clickable") %>%
+textReviews1 <- movie1 %>%
+  html_nodes("div.text.show-more__control") %>%
   html_text()
 
-textReviews2 <- textReviews2[1:10]
-splitReviews2 <- unlist(strsplit(textReviews2,"\n"))
+textReviews1.1 <- textReviews1[1:10]
+splitReviews1 <- unlist(strsplit(textReviews1.1, "\n"))
+
+print(splitReviews1)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data_frame(
+  MovieTitle = movieTitle2,
+  Usernames = users1.1,
+  Ratings = splitrate2,
+  ReviewDate= review1.2,
+  Review = splitReviews1
+)
+df
+
+#CSV File
+
+write.csv(df, file = "SecondMovie.csv")
+read.csv("SecondMovie.csv")
+```
+Third Movie - "Poor Things"
+```{r}
+#Third Movie Title URL - "Poor Things" (Usernames)
+
+url3 <- "https://www.imdb.com/title/tt14230458/reviews/?ref_=tt_ql_2"
+session <- bow(url3, user_agent = "Educational Purposes")
+
+movie2 <- read_html(url3)
+
+movieTitle3 <- title1.1[3]
+movieTitle3
+
+#Users
+users2 <- movie2 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.2 <- users2[1:10]
+users1.2
+
+#Ratings
+
+rating1.2 <- movie2 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.3 <- rating1.2[1:10]
+ratesplit3 <- unlist(strsplit(rating1.3, "\\s+"))
+splitrate3 <- ratesplit3[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate3)
+
+#Review Date
+
+reviewDate3 <- movie2 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.3 <- reviewDate3[1:10]
+review1.3
+
+#Text Reviews
+
+textReviews2 <- movie2 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.2 <- textReviews2[1:10]
+splitReviews2 <- unlist(strsplit(textReviews1.2, "\n"))
 
 print(splitReviews2)
 
 #Data Frame (User, Ratings, Review Date, Review)
 
 df <- data_frame(
-  MovieTitle = movieTitle1,
-  Usernames = users1,
-  Ratings = splitrate,
-  ReviewDate= review1.1,
-  Review = splitReviews
+  MovieTitle = movieTitle3,
+  Usernames = users1.2,
+  Ratings = splitrate3,
+  ReviewDate= review1.3,
+  Review = splitReviews2
 )
 df
 
 #CSV File
 
-write.csv(df, file = "FirstMovie.csv")
-read.csv("FirstMovie.csv")
+write.csv(df, file = "ThirdMovie.csv")
+read.csv("ThirdMovie.csv")
 ```
+Fourth Movie Title URL - "Oppenheimer"
+```{r}
+#Fourth Movie Title URL - "Oppenheimer" (Usernames)
 
+url4 <- "https://www.imdb.com/title/tt15398776/reviews/?ref_=tt_ql_2"
+session <- bow(url4, user_agent = "Educational Purposes")
 
+movie3 <- read_html(url4)
 
+movieTitle4 <- title1.1[4]
+movieTitle4
 
+#Users
+users3 <- movie3 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.3 <- users3[1:10]
+users1.3
+
+#Ratings
+
+rating1.3 <- movie3 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.4 <- rating1.3[1:10]
+ratesplit4 <- unlist(strsplit(rating1.4, "\\s+"))
+splitrate4 <- ratesplit4[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate4)
+
+#Review Date
+
+reviewDate4 <- movie3 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.4 <- reviewDate4[1:10]
+review1.4
+
+#Text Reviews
+
+textReviews3 <- movie3 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.3 <- textReviews3[1:10]
+splitReviews3 <- unlist(strsplit(textReviews1.3, "\n"))
+
+print(splitReviews3)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data_frame(
+  MovieTitle = movieTitle4,
+  Usernames = users1.3,
+  Ratings = splitrate4,
+  ReviewDate= review1.4,
+  Review = splitReviews3
+)
+df
+
+#CSV File
+
+write.csv(df, file = "FourthMovie.csv")
+read.csv("FourthMovie.csv")
+```
+Fifth Movie Title URL - "Madame Web"
+```{r}
+#Fifth Movie Title URL - "Madame Web" (Usernames)
+
+url5 <- "https://www.imdb.com/title/tt11057302/reviews/?ref_=tt_ql_2"
+session <- bow(url5, user_agent = "Educational Purposes")
+
+movie5 <- read_html(url5)
+
+movieTitle5 <- title1.1[5]
+movieTitle5
+
+#Users
+users4 <- movie5 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.4 <- users4[1:10]
+users1.4
+
+#Ratings
+
+rating1.4 <- movie5 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.5 <- rating1.4[1:10]
+ratesplit5 <- unlist(strsplit(rating1.5, "\\s+"))
+splitrate5 <- ratesplit5[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate5)
+
+#Review Date
+
+reviewDate5 <- movie5 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.5 <- reviewDate5[1:10]
+review1.5
+
+#Text Reviews
+
+textReviews4 <- movie5 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.4 <- textReviews4[1:10]
+splitReviews4 <- unlist(strsplit(textReviews1.4, "\n"))
+
+print(splitReviews4)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data_frame(
+  MovieTitle = movieTitle5,
+  Usernames = users1.4,
+  Ratings = splitrate5,
+  ReviewDate= review1.5,
+  Review = splitReviews4
+)
+df
+
+#CSV File
+
+write.csv(df, file = "FifthMovie.csv")
+read.csv("FifthMovie.csv")
+```
+Sixth Movie Title URL - "Anyone But You"
+```{r}
+#Sixth Movie Title URL - "Anyone But You" (Usernames)
+
+url6 <- "https://www.imdb.com/title/tt26047818/reviews/?ref_=tt_ql_2"
+session <- bow(url6, user_agent = "Educational Purposes")
+
+movie6 <- read_html(url6)
+
+movieTitle6 <- title1.1[6]
+movieTitle6
+
+#Users
+users5 <- movie6 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.5 <- users5[1:10]
+users1.5
+
+#Ratings
+
+rating1.5 <- movie6 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.6 <- rating1.5[1:10]
+ratesplit6 <- unlist(strsplit(rating1.6, "\\s+"))
+splitrate6 <- ratesplit6[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate6)
+
+#Review Date
+
+reviewDate6 <- movie6 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.6 <- reviewDate6[1:10]
+review1.6
+
+#Text Reviews
+
+textReviews5 <- movie6 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.5 <- textReviews5[1:10]
+splitReviews5 <- unlist(strsplit(textReviews1.5, "\n"))
+
+print(splitReviews5)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data.frame(
+  MovieTitle = movieTitle6,
+  Usernames = users1.5,
+  Ratings = splitrate6,
+  ReviewDate= review1.6,
+  Review = splitReviews5
+)
+df
+
+#CSV File
+
+write.csv(df, file = "SixthMovie.csv")
+read.csv("SixthMovie.csv")
+```
+Seventh Movie Title URL - "The Zone of Interest"
+```{r}
+#Seventh Movie Title URL - "The Zone of Interest" (Usernames)
+
+url7 <- "https://www.imdb.com/title/tt7160372/reviews/?ref_=tt_ql_2"
+session <- bow(url7, user_agent = "Educational Purposes")
+
+movie7 <- read_html(url7)
+
+movieTitle7 <- title1.1[8]
+movieTitle7
+
+#Users
+users6 <- movie7 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.6 <- users6[1:10]
+users1.6
+
+#Ratings
+
+rating1.6 <- movie7 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.7 <- rating1.6[1:10]
+ratesplit7 <- unlist(strsplit(rating1.7, "\\s+"))
+splitrate7 <- ratesplit7[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate7)
+
+#Review Date
+
+reviewDate7 <- movie7 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.7 <- reviewDate7[1:10]
+review1.7
+
+#Text Reviews
+
+textReviews6 <- movie7 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.6 <- textReviews6[1:10]
+splitReviews6 <- unlist(strsplit(textReviews1.6, "\n"))
+
+print(splitReviews6)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data.frame(
+  MovieTitle = movieTitle7,
+  Usernames = users1.6,
+  Ratings = splitrate7,
+  ReviewDate= review1.7,
+  Review = splitReviews6
+)
+df
+
+#CSV File
+
+write.csv(df, file = "SeventhMovie.csv")
+read.csv("SeventhMovie.csv")
+```
+Eighth Movie Title URL - "Spaceman"
+```{r}
+
+#Eighth Movie Title URL - "The Zone of Interest" (Usernames)
+
+url8 <- "https://www.imdb.com/title/tt11097384/reviews/?ref_=tt_ql_2"
+session <- bow(url8, user_agent = "Educational Purposes")
+
+movie8<- read_html(url8)
+
+movieTitle8 <- title1.1[9]
+movieTitle8
+
+#Users
+users7 <- movie8 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.7 <- users7[1:10]
+users1.7
+
+#Ratings
+
+rating1.7 <- movie8 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.8 <- rating1.7[1:10]
+ratesplit8 <- unlist(strsplit(rating1.8, "\\s+"))
+splitrate8 <- ratesplit8[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate8)
+
+#Review Date
+
+reviewDate8 <- movie8 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.8 <- reviewDate8[1:10]
+review1.8
+
+#Text Reviews
+
+textReviews7 <- movie8 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.7 <- textReviews7[1:10]
+splitReviews7 <- unlist(strsplit(textReviews1.7, "\n"))
+
+print(splitReviews7)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data.frame(
+  MovieTitle = movieTitle8,
+  Usernames = users1.7,
+  Ratings = splitrate8,
+  ReviewDate= review1.8,
+  Review = splitReviews7
+)
+df
+
+#CSV File
+
+write.csv(df, file = "EighthMovie.csv")
+read.csv("EighthMovie.csv")
+```
+Ninth Movie Title URL - "Mea Culpa"
+```{r}
+#Ninth Movie Title URL - "Mea Culpa" (Usernames)
+
+url9 <- "https://www.imdb.com/title/tt26861992/reviews/?ref_=tt_ql_2"
+session <- bow(url9, user_agent = "Educational Purposes")
+
+movie9<- read_html(url9)
+
+movieTitle9 <- title1.1[10]
+movieTitle9
+
+#Users
+users8 <- movie9 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.8 <- users8[1:10]
+users1.8
+
+#Ratings
+
+rating1.8 <- movie9 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.9 <- rating1.8[1:10]
+ratesplit9 <- unlist(strsplit(rating1.9, "\\s+"))
+splitrate9 <- ratesplit9[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate9)
+
+#Review Date
+
+reviewDate9 <- movie9 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.9 <- reviewDate9[1:10]
+review1.9
+
+#Text Reviews
+
+textReviews8 <- movie9 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.8 <- textReviews8[1:10]
+splitReviews8 <- unlist(strsplit(textReviews1.8, "\n"))
+
+print(splitReviews8)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data.frame(
+  MovieTitle = movieTitle9,
+  Usernames = users1.8,
+  Ratings = splitrate9,
+  ReviewDate= review1.9,
+  Review = splitReviews8
+)
+df
+
+#CSV File
+
+write.csv(df, file = "NinthMovie.csv")
+read.csv("NinthMovie.csv")
+```
+Tenth Movie Title URL - "Dune (1984)"
+```{r}
+#Tenth Movie Title URL - "Dune (1984)" (Usernames)
+
+url11 <- "https://www.imdb.com/title/tt0087182/reviews/?ref_=tt_ql_2"
+session <- bow(url11, user_agent = "Educational Purposes")
+
+movie11 <- read_html(url11)
+
+movieTitle11 <- title1.1[11]
+movieTitle11
+
+#Users
+users8 <- movie9 %>%
+  html_nodes("span.display-name-link") %>%
+  html_text()
+
+users1.8 <- users8[1:10]
+users1.8
+
+#Ratings
+
+rating1.8 <- movie9 %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text()
+
+rating1.9 <- rating1.8[1:10]
+ratesplit9 <- unlist(strsplit(rating1.9, "\\s+"))
+splitrate9 <- ratesplit9[c(2,4,6,8,10,12,14,16,18,20)]
+
+print(splitrate9)
+
+#Review Date
+
+reviewDate9 <- movie9 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+  
+review1.9 <- reviewDate9[1:10]
+review1.9
+
+#Text Reviews
+
+textReviews8 <- movie9 %>%
+  html_nodes("div.text.show-more__control") %>%
+  html_text()
+
+textReviews1.8 <- textReviews8[1:10]
+splitReviews8 <- unlist(strsplit(textReviews1.8, "\n"))
+
+print(splitReviews8)
+
+#Data Frame (User, Ratings, Review Date, Review)
+
+df <- data.frame(
+  MovieTitle = movieTitle9,
+  Usernames = users1.8,
+  Ratings = splitrate9,
+  ReviewDate= review1.9,
+  Review = splitReviews8
+)
+df
+
+#CSV File
+
+write.csv(df, file = "NinthMovie.csv")
+read.csv("NinthMovie.csv")
+```
