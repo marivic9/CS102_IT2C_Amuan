@@ -167,7 +167,7 @@ name_5 <- productNames_5[1:30]
 name_5
 
 #dataframing my datas so i can bind them later on.
-df_5<- data.frame(Products = name_5)
+df_5 <- data.frame(Products = name_5)
 df_5
 
 
@@ -214,7 +214,6 @@ name_8
 #Dataframing my datas so i can bind them later on.
 df_8 <- data.frame(Products = name_8)
 df_8
-
 
 combinedDataframe <- rbind(df_5,df_6,df_7,df_8)
 combinedDataframe
@@ -265,14 +264,840 @@ combinedDataframe_2
 
 #dataframe
 secondDataframe <- data.frame(
-  Products = productFirstSession_1,
-  Price = priceFirstSession_1,
-  Ratings = ratingFirstSession_1,
-  Reviews = reviewFirstSession_1
+  Products = productSecondSession_1,
+  Price = priceSecondSession_1,
+  Ratings = ratingSecondSession_1,
+  Reviews = reviewSecondSession_1
 )
 secondDataframe
 
 #CSV File
-write.csv(firstDataframe, "second_session_ten_products.csv")
+write.csv(secondDataframe, "second_session_ten_productss.csv")
+read.csv("second_session_ten_productss.csv")
 ```
 
+
+1O products Product name, name or reviewer,date, individual rating, review text
+
+1st product
+```{r}
+#5 start nga review
+urlpro1 <- "https://www.amazon.com.au/product-reviews/B07M6Y7355/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar"
+
+session1 <-bow(urlpro1, user_agent = "Educational Purposes")
+sessiont1A <- scrape(session1)
+#productname 
+product1 <- sessiont1A %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product1
+  # name of reviewer
+namerev1A <- sessiont1A %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer1A <- namerev1A[1:13] 
+namer1A
+
+# date of review
+date1A <- sessiont1A %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev1A <- date1A[1:13]
+daterev1A
+# individual rating
+rateindi1A <- sessiont1A %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi1A <- rateindi1A[1:13]
+
+# Review comment
+revcom1A <- sessiont1A %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi1A <- revcom1A[1:13]
+revi1A <- gsub("\n", "", revi1A)
+
+framet1 <- data.frame( 
+  Product = product1,
+  Name = namer1A, 
+  Date = daterev1A, 
+  IndividualRating = indi1A, 
+  Review = revi1A
+)
+framet1
+
+# second page  4 start nga review
+
+urlpro1.1 <- "https://www.amazon.com.au/product-reviews/B07M6Y7355/ref=cm_cr_unknown?ie=UTF8&filterByStar=four_star&reviewerType=all_reviews&pageNumber=1#reviews-filter-bar"
+
+session1.1 <-bow(urlpro1.1, user_agent = "Educational Purposes")
+sessiont1.1 <- scrape(session1.1) 
+
+#productname 
+product11<- sessiont1.1 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product11
+  # name of reviewer
+namerev11<- sessiont1.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer11 <- namerev11[1:13] 
+namer11
+
+# date of review
+date11<- sessiont1.1%>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev11 <- date11[1:13]
+daterev11
+# individual rating
+rateindi11<- sessiont1.1 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi11<- rateindi11[1:13]
+
+# Review comment
+revcom11 <- sessiont1.1 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi11 <- revcom11[1:13]
+revi11 <- gsub("\n", "", revi11)
+
+framet11 <- data.frame( 
+  Product = product11,
+  Name = namer11, 
+  Date = daterev11, 
+  IndividualRating = indi11, 
+  Review = revi11
+)
+framet11
+ 
+
+nrow(framet1)
+nrow(framet11)
+
+framet1 <- framet1[-nrow(framet1), ]
+
+product_1 <- rbind(framet1, framet11)
+write.csv(product_1, file = "1st_PRODUCT.csv")
+
+head(product_1)
+```
+2nd product
+```{r}
+#first page
+urlpro2 <- "https://www.amazon.com.au/product-reviews/B08Z98JNPC/ref=zg_bs_g_5150070051_d_sccl_2_cr/356-5645969-7697568"
+
+# Scraping the four-star reviews
+session2 <- bow(urlpro2, user_agent = "Educational Purposes")
+sessiont2 <- scrape(session2)
+
+# Extracting data for the four-star reviews
+product2 <- sessiont2 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis") %>%
+  html_text()
+
+namerev2 <- sessiont2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer2 <- namerev2[1:12]
+
+date2 <- sessiont2 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev2 <- date2[1:12]
+
+rateindi2 <- sessiont2 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi2 <- rateindi2[1:12]
+
+revcom2 <- sessiont2 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi2 <- revcom2[1:12]
+revi2 <- gsub("\n", "", revi2)
+
+dataproduct2 <- data.frame(
+  Product = product2,
+  Name = namer2,
+  Date = daterev2,
+  IndividualRating = indi2,
+  Review = revi2
+) 
+dataproduct2
+
+#second page
+urlpro22 <- "https://www.amazon.com.au/product-reviews/B08Z98JNPC/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the four-star reviews
+session22 <- bow(urlpro22, user_agent = "Educational Purposes")
+sessiont22 <- scrape(session2)
+
+# Extracting data for the four-star reviews
+product22 <- sessiont22 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis") %>%
+  html_text()
+
+namerev22 <- sessiont22 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer22 <- namerev22[1:13]
+
+date22 <- sessiont22 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev22 <- date22[1:13]
+
+rateindi22 <- sessiont22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi22 <- rateindi22[1:13]
+
+revcom22 <- sessiont22 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi22 <- revcom22[1:13]
+revi22 <- gsub("\n", "", revi22)
+
+dataproduct22 <- data.frame(
+  Product = product22,
+  Name = namer22,
+  Date = daterev22,
+  IndividualRating = indi22,
+  Review = revi22
+) 
+dataproduct22
+
+# Combining the data from both pages
+product_combined <- rbind(dataproduct2, dataproduct22)
+
+# Writing the combined data to a CSV file
+write.csv(product_combined, file = "2nd_PRODUCT.csv")
+```
+
+3rd product
+```{r}
+urlpro3<- "https://www.amazon.com.au/product-reviews/B07CKMCQQZ/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=five_star&pageNumber=1"
+
+# Scraping the four-star reviews
+session3<- bow(urlpro3, user_agent = "Educational Purposes")
+sessiont3 <- scrape(session3)
+
+# Extracting data for the four-star reviews
+product3 <- sessiont3 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product3
+
+namerev3 <- sessiont3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer3 <- namerev3[1:13]
+
+date3 <- sessiont3 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev3 <- date3[1:13]
+
+rateindi3 <- sessiont3 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi3 <- rateindi3[1:13]
+
+revcom3 <- sessiont3 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi3 <- revcom3[1:13]
+revi3 <- gsub("\n", "", revi3)
+
+dataproduct3 <- data.frame(
+  Product = product3,
+  Name = namer3,
+  Date = daterev3,
+  IndividualRating = indi3,
+  Review = revi3
+) 
+dataproduct3
+
+
+#second page 
+
+urlpro33<- "https://www.amazon.com.au/product-reviews/B07CKMCQQZ/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the four-star reviews
+session33<- bow(urlpro33, user_agent = "Educational Purposes")
+sessiont33<- scrape(session33)
+
+#name of the product
+product33 <- sessiont33 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product33
+# Extracting data for the four-star reviews
+namerev33 <- sessiont33 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer33 <- namerev33[1:12]
+
+date33 <- sessiont33 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev33 <- date33[1:12]
+
+rateindi33 <- sessiont33 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi33 <- rateindi33[1:12]
+
+revcom33 <- sessiont33 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi33 <- revcom33[1:12]
+revi33 <- gsub("\n", "", revi33)
+
+dataproduct33 <- data.frame(
+  Product = product33,
+  Name = namer33,
+  Date = daterev33,
+  IndividualRating = indi33,
+  Review = revi33
+) 
+dataproduct33
+
+# Combining the data from both pages
+
+product3_ <- rbind(dataproduct3, dataproduct33)
+
+# Writing the combined data to a CSV file
+write.csv(product3_, file = "3rd_PRODUCT.csv")
+#load product3 
+head(product3_)
+```
+4th product
+```{r}
+urlpro4<- "https://www.amazon.com.au/product-reviews/B07PTY7SBV/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the four-star reviews
+session4<- bow(urlpro4, user_agent = "Educational Purposes")
+sessiont4 <- scrape(session4)
+
+# Extracting data for the four-star reviews
+product4 <- sessiont4 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product4
+
+namerev4<- sessiont4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer4 <- namerev4[1:12]
+
+date4<- sessiont4 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev4 <- date4[1:12]
+
+rateindi4 <- sessiont4 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi4 <- rateindi4[1:12]
+
+revcom4 <- sessiont4 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi4 <- revcom4[1:12]
+revi4 <- gsub("\n", "", revi4)
+
+dataproduct4 <- data.frame(
+  Product = product4,
+  Name = namer4,
+  Date = daterev4,
+  IndividualRating = indi4,
+  Review = revi4
+) 
+dataproduct3
+
+
+#second page 
+
+urlpro44<- "https://www.amazon.com.au/product-reviews/B07PTY7SBV/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=five_star&pageNumber=1"
+
+# Scraping the four-star reviews
+session44<- bow(urlpro44, user_agent = "Educational Purposes")
+sessiont44<- scrape(session44)
+
+#name of the product
+product44 <- sessiont44 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+product44
+# Extracting data for the four-star reviews
+namerev44 <- sessiont44 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer44 <- namerev44[1:13]
+
+date44 <- sessiont44 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev44 <- date44[1:13]
+
+rateindi44 <- sessiont44%>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi44 <- rateindi44[1:13]
+
+revcom44 <- sessiont44 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi44 <- revcom44[1:13]
+revi44 <- gsub("\n", "", revi44)
+
+dataproduct44 <- data.frame(
+  Product = product44,
+  Name = namer44,
+  Date = daterev44,
+  IndividualRating = indi44,
+  Review = revi44
+) 
+dataproduct44
+
+# Combining the data from both pages
+
+product4_ <- rbind(dataproduct4, dataproduct44)
+
+# Writing the combined data to a CSV file
+write.csv(product4_, file = "4th_PRODUCT.csv")
+#load product3 
+head(product4_)
+```
+5th product
+```{r}
+urlpro5 <- "https://www.amazon.com.au/product-reviews/B00AINMFAC/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=five_star&pageNumber=1"
+
+# Scraping the five-star reviews
+session5 <- bow(urlpro5, user_agent = "Educational Purposes")
+sessiont5 <- scrape(session5)
+
+# Extracting data for the five-star reviews
+product5 <- sessiont5 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+
+namerev5 <- sessiont5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer5 <- namerev5[1:13]
+
+date5 <- sessiont5 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev5 <- date5[1:13]
+
+rateindi5 <- sessiont5 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi5 <- rateindi5[1:13]
+
+revcom5 <- sessiont5 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi5 <- revcom5[1:13]
+revi5 <- gsub("\n", "", revi5)
+
+dataproduct5 <- data.frame(
+  Product = product5,
+  Name = namer5,
+  Date = daterev5,
+  IndividualRating = indi5,
+  Review = revi5
+) 
+
+#second page 
+
+urlpro55 <- "https://www.amazon.com.au/product-reviews/B00AINMFAC/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the five-star reviews from the second page
+session55 <- bow(urlpro55, user_agent = "Educational Purposes")
+sessiont55 <- scrape(session55)
+
+# Extracting data for the five-star reviews from the second page
+namerev55 <- sessiont55 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer55 <- namerev55[1:12]
+
+date55 <- sessiont55 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev55 <- date55[1:12]
+
+rateindi55 <- sessiont55 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi55 <- rateindi55[1:12]
+
+revcom55 <- sessiont55 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi55 <- revcom55[1:12]
+revi55 <- gsub("\n", "", revi55)
+
+dataproduct55 <- data.frame(
+  Product = product5,
+  Name = namer55,
+  Date = daterev55,
+  IndividualRating = indi55,
+  Review = revi55
+) 
+
+# Combining the data from both pages
+product5_ <- rbind(dataproduct5, dataproduct55)
+
+# Writing the combined data to a CSV file
+write.csv(product5_, file = "5th_PRODUCT.csv")
+
+#load product5
+head(product5_)
+```
+6th product
+```{r}
+urlpro6 <- "https://www.amazon.com.au/product-reviews/B00EUMC62O/ref=zg_bs_g_5150070051_d_sccl_50_cr/356-5645969-7697568"
+
+# Scraping the six-star reviews
+session6 <- bow(urlpro6, user_agent = "Educational Purposes")
+sessiont6 <- scrape(session6)
+
+# Extracting data for the six-star reviews
+product6 <- sessiont6 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+
+namerev6 <- sessiont6 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer6 <- namerev6[1:12]
+
+date6 <- sessiont6 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev6 <- date6[1:12]
+
+rateindi6 <- sessiont6 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi6 <- rateindi6[1:12]
+
+revcom6 <- sessiont6 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi6 <- revcom6[1:12]
+revi6 <- gsub("\n", "", revi6)
+
+dataproduct6 <- data.frame(
+  Product = product6,
+  Name = namer6,
+  Date = daterev6,
+  IndividualRating = indi6,
+  Review = revi6
+) 
+
+#second page 
+
+urlpro66 <- "https://www.amazon.com.au/product-reviews/B00EUMC62O/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the six-star reviews from the second page
+session66 <- bow(urlpro66, user_agent = "Educational Purposes")
+sessiont66 <- scrape(session66)
+
+# Extracting data for the six-star reviews from the second page
+namerev66 <- sessiont66 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer66 <- namerev66[1:13]
+
+date66 <- sessiont66 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev66 <- date66[1:13]
+
+rateindi66 <- sessiont66 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi66 <- rateindi66[1:13]
+
+revcom66 <- sessiont66 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi66 <- revcom66[1:13]
+revi66 <- gsub("\n", "", revi66)
+
+dataproduct66 <- data.frame(
+  Product = product6,
+  Name = namer66,
+  Date = daterev66,
+  IndividualRating = indi66,
+  Review = revi66
+) 
+
+# Combining the data from both pages
+product6_ <- rbind(dataproduct6, dataproduct66)
+
+# Writing the combined data to a CSV file
+write.csv(product6_, file = "6th_PRODUCT.csv")
+
+#load product6
+head(product6_)
+```
+7th produt
+```{r}
+urlpro7 <- "https://www.amazon.com.au/product-reviews/B07HK9TQGW/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the seven-star reviews
+session7 <- bow(urlpro7, user_agent = "Educational Purposes")
+sessiont7 <- scrape(session7)
+
+# Extracting data for the seven-star reviews
+product7 <- sessiont7 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+
+namerev7 <- sessiont7 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer7 <- namerev7[1:12]
+
+date7 <- sessiont7 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev7 <- date7[1:12]
+
+rateindi7 <- sessiont7 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi7 <- rateindi7[1:12]
+
+revcom7 <- sessiont7 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi7 <- revcom7[1:12]
+revi7 <- gsub("\n", "", revi7)
+
+dataproduct7 <- data.frame(
+  Product = product7,
+  Name = namer7,
+  Date = daterev7,
+  IndividualRating = indi7,
+  Review = revi7
+) 
+
+#second page 
+
+urlpro77 <- "https://www.amazon.com.au/product-reviews/B07HK9TQGW/ref=zg_bs_g_5150070051_d_sccl_7_cr/356-5645969-7697568"
+
+# Scraping the seven-star reviews from the second page
+session77 <- bow(urlpro77, user_agent = "Educational Purposes")
+sessiont77 <- scrape(session77)
+
+# Extracting data for the seven-star reviews from the second page
+namerev77 <- sessiont77 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer77 <- namerev77[1:13]
+
+date77 <- sessiont77 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev77 <- date77[1:13]
+
+rateindi77 <- sessiont77 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi77 <- rateindi77[1:13]
+
+revcom77 <- sessiont77 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi77 <- revcom77[1:13]
+revi77 <- gsub("\n", "", revi77)
+
+dataproduct77 <- data.frame(
+  Product = product7,
+  Name = namer77,
+  Date = daterev77,
+  IndividualRating = indi77,
+  Review = revi77
+) 
+
+# Combining the data from both pages
+product7_ <- rbind(dataproduct7, dataproduct77)
+
+# Writing the combined data to a CSV file
+write.csv(product7_, file = "7th_PRODUCT.csv")
+
+#load product7
+head(product7_)
+```
+8th product
+```{r}
+urlpro8 <- "https://www.amazon.com.au/product-reviews/B07P66L8JP/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=five_star&pageNumber=1"
+
+# Scraping the eight-star reviews
+session8 <- bow(urlpro8, user_agent = "Educational Purposes")
+sessiont8 <- scrape(session8)
+
+# Extracting data for the eight-star reviews
+product8 <- sessiont8 %>%
+  html_nodes("h1.a-size-large.a-text-ellipsis")%>% 
+  html_text()
+
+namerev8 <- sessiont8 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer8 <- namerev8[1:12]
+
+date8 <- sessiont8 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev8 <- date8[1:12]
+
+rateindi8 <- sessiont8 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi8 <- rateindi8[1:12]
+
+revcom8 <- sessiont8 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi8 <- revcom8[1:12]
+revi8 <- gsub("\n", "", revi8)
+
+dataproduct8 <- data.frame(
+  Product = product8,
+  Name = namer8,
+  Date = daterev8,
+  IndividualRating = indi8,
+  Review = revi8
+) 
+
+#second page 
+
+urlpro88 <- "https://www.amazon.com.au/product-reviews/B07P66L8JP/ref=cm_cr_unknown/356-5645969-7697568?filterByStar=four_star&pageNumber=1"
+
+# Scraping the eight-star reviews from the second page
+session88 <- bow(urlpro88, user_agent = "Educational Purposes")
+sessiont88 <- scrape(session88)
+
+# Extracting data for the eight-star reviews from the second page
+namerev88 <- sessiont88 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+namer88 <- namerev88[1:11]
+
+date88 <- sessiont88 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+daterev88 <- date88[1:11]
+
+rateindi88 <- sessiont88 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+indi88 <- rateindi88[1:11]
+
+revcom88 <- sessiont88 %>%
+  html_nodes("span.a-size-base.review-text.review-text-content") %>%
+  html_text()
+
+revi88 <- revcom88[1:11]
+revi88 <- gsub("\n", "", revi88)
+
+dataproduct88 <- data.frame(
+  Product = product8,
+  Name = namer88,
+  Date = daterev88,
+  IndividualRating = indi88,
+  Review = revi88
+) 
+
+# Combining the data from both pages
+product8_ <- rbind(dataproduct8, dataproduct88)
+
+# Writing the combined data to a CSV file
+write.csv(product8_, file = "8th_PRODUCT.csv")
+
+#load product8
+head(product8_)
+```
+9th product
+```{r}
+
+```
+10th product
+```{r}
+
+```
