@@ -1,91 +1,3367 @@
 ---
-title: "Untitled"
-author: "Marivic"
-date: "2024-03-03"
+title: "Lab Exercise#2"
+author: "Marivic Amuan"
+date: "`r Sys.Date()`"
 output: pdf_document
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r,warning=FALSE}
 library(rvest)
 library(dplyr)
 library(polite)
 library(stringr)
 library(httr2)
-
-url <- "https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0"
-
-session <- bow(url,user_agent = "Educational Purposes")
-session
 ```
-Products
-```{r}
-session <- session ("https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0")
+SCRAPING 50 PRODUCTS 
+```{r,warning=FALSE}
+url <- "https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0"
+session <- bow(url,user_agent = "Educational Purposes")
 
+
+#29 PRODUCTS
+session <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_nav_garden_0")
 products <- session %>%
   html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
   
-productNames <- products[1:50]
+productNames <- products[1:29]
 productNames
-```
-Title of Reviews
-```{r}
-session1 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
 
-products1 <- session1 %>%
-  html_nodes("span") %>%
+#20 PRODUCTS
+session1.2 <- session ("https://www.amazon.com.au/gp/bestsellers/garden/ref=zg_bs_pg_2_garden?ie=UTF8&pg=2")
+products1 <- session1.2 %>%
+  html_nodes("div._cDEzb_p13n-sc-css-line-clamp-3_g3dy1") %>%
   html_text()
   
-productTitleReviews <- products1[2:30]
-productTitleReviews
-```
-Reviewer
-```{r}
-session2 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
+productNames2 <- products1[1:21]
+productNames2
 
-products2 <- session2 %>%
+productNames1 <- products[[1]]
+productNames1
+
+
+fiftyProd <- bind_cols(fiftyProd = c(productNames, productNames2))
+fiftyProd
+
+write.csv(fiftyProd, "FiftyProducts.csv")
+read.csv("FiftyProducts.csv")
+```
+FIRST LINK (PRODUCT) Debco Premium Potting Mix - Name of Reviewer (50)
+```{r}
+#First Page
+session1.3 <- session ("https://www.amazon.com.au/product-reviews/B087XK9H6S/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers1.3 <- session1.3 %>%
   html_nodes("span.a-profile-name") %>%
   html_text()
-  
-productReviewers <- products2[2:30]
-productReviewers
-```
-Date of Review
-```{r}
-session3 <- session ("https://www.amazon.com.au/LENCENT-Universal-Worldwide-International-Travelling/dp/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1/356-5645969-7697568?psc=1#customerReviews")
 
-products3 <- session3 %>%
-  html_nodes("span.a-size-base.a-color-secondary.review-date") %>%
-  html_text()
-  
-productDateReviews <- products3[2:30]
-productDateReviews
-```
-Rating
-```{r}
-session4 <- session ("https://www.amazon.com.au/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0")
+reviewers1.3 <- nameReviewers1.3 [3:12]
+reviewers1.3
 
-products4 <- session4 %>%
-  html_nodes("span.a-size-small") %>%
-  html_text()
-  
-productRatings <- products4[1:30]
-productRatings
-```
-Type of Review (Verified or Not)
-```{r}
-session4 <- session ("https://www.amazon.com.au/product-reviews/B081J8G3FP/ref=zg_bs_g_electronics_d_sccl_1_cr/356-5645969-7697568")
+#Second Page
+session1.4 <- session ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
 
-products5 <- session4 %>%
-  html_nodes("span") %>%
+nameReviewers1.4 <- session1.4 %>%
+  html_nodes("span.a-profile-name") %>%
   html_text()
+
+reviewers1.4 <- nameReviewers1.4 [3:12]
+reviewers1.4
+
+#Third Page
+session1.5 <- session ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers1.5 <- session1.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers1.5 <- nameReviewers1.5 [3:12]
+reviewers1.5
+
+
+#Fourth Page
+session1.6 <- session("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers1.6  <- session1.6  %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers1.6 <- nameReviewers1.6 [3:12]
+reviewers1.6 
+ 
+#Fifth Page
+session1.7 <- session("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers1.7 <- session1.7 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers1.7 <- nameReviewers1.7[3:12]
+reviewers1.7
+
+firstProd1 <- products[[1]]
+firstProd1
+
+df1 <- bind_cols(NameOfReviewers = c(reviewers1.3, reviewers1.4, reviewers1.5,reviewers1.6,reviewers1.7))
+print(df1)
+```
+FIRST PRODUCT - Debco Premium Potting Mix - Title of Reviews (50)
+```{r} 
+#title of reviews
+#First Page
+url1 <- ("https://www.amazon.com.au/product-reviews/B087XK9H6S/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product1 <- read_html(url1)
+
+nameReviewers1.6 <- product1 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers1.6 <- as.character(nameReviewers1.6)  
+nameReviewers1.6 <- gsub("\n", "", nameReviewers1.6)
+
+reviewers1.6 <- nameReviewers1.6 [3:17]
+print(reviewers1.6)
+
+
+#Second Page
+url1.1<- "https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews" 
+
+product1.1 <- read_html(url1.1)
+
+nameReviewers1.7 <- product1.1 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers1.7 <- nameReviewers1.7[3:12]  
+
+nameReviewers1.7 <- as.character(reviewers1.7)  
+nameReviewers1.7 <- gsub("\n", "", nameReviewers1.7)  
+
+print(nameReviewers1.7)
+
+
+#Third Page
+url1.2 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product1.2 <- read_html(url1.2)
+
+nameReviewers1.8 <- product1.2 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers1.8 <- nameReviewers1.8[3:12]  
+
+nameReviewers1.8 <- as.character(nameReviewers1.8)  
+nameReviewers1.8 <- gsub("\n", "", nameReviewers1.8)  
+
+print(nameReviewers1.8)
+
+
+#Fourth Page
+url1.3 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product1.3 <- read_html(url1.3)
+
+nameReviewers1.9 <- product1.3 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers1.9 <- nameReviewers1.9[3:12]  
+
+nameReviewers1.9 <- as.character(nameReviewers1.9)  
+nameReviewers1.9 <- gsub("\n", "", nameReviewers1.9)  
+
+print(nameReviewers1.9)
+length(nameReviewers1.9)
+
+
+#Fifth Page
+url1.4 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product1.4 <- read_html(url1.4)
+
+nameReviewers1.10 <- product1.4 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers1.10 <- nameReviewers1.10[3:12]  
+
+nameReviewers1.10 <- as.character(nameReviewers1.10)  
+nameReviewers1.10 <- gsub("\n", "", nameReviewers1.10)  
+
+print(nameReviewers1.10)
+length(nameReviewers1.10)
+
+#binding the datas. 
+df2 <- bind_cols(TitleOfReviewers = c(nameReviewers1.6,nameReviewers1.7,nameReviewers1.8,nameReviewers1.9,nameReviewers1.10))
+print(df2)
+```
+FIRST PRODUCT - Debco Premium Potting Mix - Type of Reviews (50)
+```{r}
+#Type of Reviews
+#First Page
+url2 <- ("https://www.amazon.com.au/product-reviews/B087XK9H6S/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview <- read_html(url2)
+
+nameReviewers1.9 <- typeOfReview %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers1.9 <- nameReviewers1.9 [3:12]
+print(reviewers1.9)
+
+
+#Second Page
+url2.2 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview1 <- read_html(url2.2)
+
+nameReviewers1.10 <- typeOfReview1 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers1.10 <- nameReviewers1.10 [3:12]
+print(reviewers1.10)
+
+#Third Page
+url2.3 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2 <- read_html(url2.3)
+
+nameReviewers1.11 <- typeOfReview2 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers1.11 <- nameReviewers1.11 [3:12]
+print(reviewers1.11)
+
+#Fourth Page
+url2.4 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview3 <- read_html(url2.4)
+
+nameReviewers1.12 <- typeOfReview3 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers1.12 <- nameReviewers1.12 [3:12]
+print(reviewers1.12)
+
+
+#Fifth Page
+url2.5 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview5 <- read_html(url2.5)
+
+nameReviewers1.13 <- typeOfReview5 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers1.13 <- nameReviewers1.13 [3:12]
+print(reviewers1.13)
+
+df3 <- bind_cols(TypeOfReviewers = c(reviewers1.9, reviewers1.10, reviewers1.11,reviewers1.12,reviewers1.13))
+print(df3)
+```
+FIRST PRODUCT - Debco Premium Potting Mix - Date (50)
+```{r}
+#First Page
+url3 <- ("https://www.amazon.com.au/product-reviews/B087XK9H6S/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview3 <- read_html(url3)
+
+nameReviewers1.13 <- typeOfReview3 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers1.13 <- nameReviewers1.13 [3:12]
+print(reviewers1.13)
+
+#Second Page
+url3.1 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview4 <- read_html(url3.1)
+
+nameReviewers1.14 <- typeOfReview4 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers1.14 <- nameReviewers1.14 [3:12]
+print(reviewers1.14)
+
+#Third Page
+url3.2 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview6 <- read_html(url3.2)
+
+nameReviewers1.16 <- typeOfReview6 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers1.16 <- nameReviewers1.16 [3:12]
+print(reviewers1.16)
+
+#Fourth Page
+url3.3 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview7 <- read_html(url3.3)
+
+nameReviewers1.17 <- typeOfReview7 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers1.17 <- nameReviewers1.17 [3:12]
+print(reviewers1.17)
+
+#Fifth Page
+url3.4 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview5 <- read_html(url3.4)
+
+nameReviewers1.18 <- typeOfReview5 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers1.18 <- nameReviewers1.18 [3:12]
+print(reviewers1.18)
+
+df4 <- bind_cols(Date = c(reviewers1.13, reviewers1.14,reviewers1.16,reviewers1.17,reviewers1.18))
+print(df4)
+```
+FIRST PRODUCT - Debco Premium Potting Mix - Rating (50)
+```{r}
+#First Page
+url4 <- ("https://www.amazon.com.au/product-reviews/B087XK9H6S/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview6 <- read_html(url4)
+
+nameReviewers1.16 <- typeOfReview6 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers1.16 <- nameReviewers1.16 [3:12]
+print(reviewers1.16)
+
+#Second Page
+url4.1 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview6 <- read_html(url4.1)
+
+nameReviewers1.17 <- typeOfReview6 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers1.17 <- nameReviewers1.17 [3:12]
+print(reviewers1.17)
+
+#Third Page
+url4.2 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview7 <- read_html(url4.2)
+
+nameReviewers1.18 <- typeOfReview7 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers1.18 <- nameReviewers1.18 [3:12]
+print(reviewers1.18)
+
+
+#Fourth Page
+url4.3 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview8 <- read_html(url4.3)
+
+nameReviewers1.20 <- typeOfReview8 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers1.20 <- nameReviewers1.20 [3:12]
+print(reviewers1.20)
+
+
+#Fifth Page
+url4.4 <- ("https://www.amazon.com.au/Debco-Premium-Potting-Mix-610347/product-reviews/B087XK9H6S/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview9 <- read_html(url4.4)
+
+nameReviewers1.19 <- typeOfReview9 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers1.19 <- nameReviewers1.19 [3:12]
+print(reviewers1.19)
+
+df5 <- bind_cols(Ratings = c(reviewers1.16, reviewers1.17, reviewers1.18,reviewers1.19,reviewers1.20))
+print(df5)
+
+dF <- data.frame(
+  Product = firstProd1,
+  NameOfReviewer = df1,
+  TitleOfReviews = df2,
+    TypeOfReview = df3, 
+  Date = df4, 
+  Rating = df5
+)
+dF
+
+write.csv(dF, "first_product.csv")
+read.csv("first_product.csv")
+```
+
+
+SECOND LINK (PRODUCT) - ThermoPro TP50 - Name of Reviewer (50)
+```{r}
+session2.1 <- session ("https://www.amazon.com.au/product-reviews/B01H1R0K68/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers2.1 <- session2.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.1 <- nameReviewers2.1 [3:12]
+reviewers2.1
+
+#Second Page
+session2.2 <- session ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers2.2 <- session2.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.2 <- nameReviewers2.2 [3:12]
+reviewers2.2
+
+#Third Page
+session2.3 <- session ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers2.3 <- session2.3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.3 <- nameReviewers2.3 [3:12]
+reviewers2.3
+
+
+#Fourth Page
+session2.4 <- session("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers2.4 <- session2.4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.4 <- nameReviewers2.4[3:12]
+reviewers2.4
+
+#Fifth Page
+session2.5 <- session("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers2.5 <- session2.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers2.5 <- nameReviewers2.5[3:12]
+reviewers2.5
+
+
+df2.1 <- bind_cols(NameOfReviewers = c(reviewers2.1, reviewers2.2, reviewers2.3,reviewers2.4,reviewers2.5))
+print(df2.1)
+```
+SECOND LINK (PRODUCT) - ThermoPro TP50 - Title of Reviews (50)
+```{r}
+#title of reviews
+#First Page
+url2.6 <- ("https://www.amazon.com.au/product-reviews/B01H1R0K68/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product2 <- read_html(url2.6)
+
+nameReviewers2.6 <- product2 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers2.6 <- as.character(nameReviewers2.6)  
+nameReviewers2.6 <- gsub("\n", "", nameReviewers2.6)
+
+reviewers2.6 <- nameReviewers2.6 [3:12]
+print(reviewers2.6)
+
+
+#Second Page
+url2.7<- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+product2.7 <- read_html(url2.7)
+
+nameReviewers2.7 <- product2.7 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.7 <- nameReviewers2.7[3:12]  
+
+nameReviewers2.7 <- as.character(reviewers2.7)  
+nameReviewers2.7 <- gsub("\n", "", nameReviewers2.7)  
+
+print(nameReviewers2.7)
+
+
+#Third Page
+url2.8 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product2.8 <- read_html(url2.8)
+
+nameReviewers2.8 <- product2.8 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.8 <- nameReviewers2.8[3:12]  
+
+nameReviewers2.8 <- as.character(nameReviewers2.8)  
+nameReviewers2.8 <- gsub("\n", "", nameReviewers2.8)  
+
+print(nameReviewers2.8)
+
+
+#Fourth Page
+url2.9 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product2.9 <- read_html(url2.9)
+
+nameReviewers2.9 <- product2.9 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.9 <- nameReviewers2.9[3:12]  
+
+nameReviewers2.9 <- as.character(nameReviewers2.9)  
+nameReviewers2.9 <- gsub("\n", "", nameReviewers2.9)  
+
+print(nameReviewers2.9)
+
+
+#Fifth Page
+url2.10 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product2.10 <- read_html(url2.10)
+
+nameReviewers2.10 <- product2.10 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.10 <- nameReviewers2.10[3:12]  
+
+nameReviewers2.10 <- as.character(nameReviewers2.10)  
+nameReviewers2.10 <- gsub("\n", "", nameReviewers2.10)  
+
+print(nameReviewers2.10)
+
+#binding the datas. 
+df2.2 <- bind_cols(TitleOfReviewers = c(nameReviewers2.6,nameReviewers2.7,nameReviewers2.8,nameReviewers2.9,nameReviewers2.10))
+print(df2.2)
+```
+SECOND LINK (PRODUCT) - ThermoPro TP50 - Type of Reviews (50)
+```{r}
+url2.11 <- ("https://www.amazon.com.au/product-reviews/B01H1R0K68/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview <- read_html(url2.11)
+
+nameReviewers2.11 <- typeOfReview %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.11 <- nameReviewers2.11 [3:12]
+print(reviewers2.11)
+
+
+#Second Page
+url2.12 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview1 <- read_html(url2.12)
+
+nameReviewers2.12 <- typeOfReview1 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.12 <- nameReviewers2.12 [3:12]
+print(reviewers2.12)
+
+#Third Page
+url2.13 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2 <- read_html(url2.13)
+
+nameReviewers2.13 <- typeOfReview2 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.13 <- nameReviewers2.13 [3:12]
+print(reviewers2.13)
+
+#Fourth Page
+url2.14 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview3 <- read_html(url2.14)
+
+nameReviewers2.14 <- typeOfReview3 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.14 <- nameReviewers2.14 [3:12]
+print(reviewers2.14)
+
+
+#Fifth Page
+url2.15 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview4 <- read_html(url2.15)
+
+nameReviewers2.15 <- typeOfReview4 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.15 <- nameReviewers2.15 [3:12]
+print(reviewers2.15)
+
+df2.3 <- bind_cols(TypeOfReviewers = c(reviewers2.11, reviewers2.12, reviewers2.13,reviewers2.14,reviewers2.15))
+print(df2.3)
+```
+SECOND LINK (PRODUCT) - ThermoPro TP50 - Date (50)
+```{r}
+#First Page
+url2.16 <- ("https://www.amazon.com.au/product-reviews/B01H1R0K68/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.16 <- read_html(url2.16)
+
+nameReviewers2.16 <- typeOfReview2.16 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.16 <- nameReviewers2.16 [3:12]
+print(reviewers2.16)
+
+#Second Page
+url2.17 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.17 <- read_html(url2.17)
+
+nameReviewers2.17 <- typeOfReview2.17 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.17 <- nameReviewers2.17 [3:12]
+print(reviewers2.17)
+
+#Third Page
+url2.18 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.18 <- read_html(url2.18)
+
+nameReviewers2.18 <- typeOfReview2.18 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.18 <- nameReviewers2.18 [3:12]
+print(reviewers2.18)
+
+#Fourth Page
+url2.19 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.19 <- read_html(url2.19)
+
+nameReviewers2.19 <- typeOfReview2.19 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.19 <- nameReviewers2.19 [3:12]
+print(reviewers2.19)
+
+#Fifth Page
+url2.20 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.20 <- read_html(url2.20)
+
+nameReviewers2.20 <- typeOfReview2.20 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.20 <- nameReviewers2.20 [3:12]
+print(reviewers2.20)
+
+df2.4 <- bind_cols(Date = c(reviewers2.16, reviewers2.17,reviewers2.18,reviewers2.19,reviewers2.20))
+print(df2.4)
+```
+SECOND LINK (PRODUCT) - ThermoPro TP50 - Rating (50)
+```{r}
+#First Page
+url2.21 <- ("https://www.amazon.com.au/product-reviews/B01H1R0K68/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.21 <- read_html(url2.21)
+
+nameReviewers2.21 <- typeOfReview2.21 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.21 <- nameReviewers2.21 [3:12]
+print(reviewers2.21)
+
+#Second Page
+url2.22 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.22 <- read_html(url2.22)
+
+nameReviewers2.22 <- typeOfReview2.22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.22 <- nameReviewers2.22 [3:12]
+print(reviewers2.22)
+
+#Third Page
+url2.23 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.23 <- read_html(url2.23)
+
+nameReviewers2.23 <- typeOfReview2.23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.23 <- nameReviewers2.23 [3:12]
+print(reviewers2.23)
+
+
+#Fourth Page
+url2.24 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.24 <- read_html(url2.24)
+
+nameReviewers2.24 <- typeOfReview2.24 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.24 <- nameReviewers2.24 [3:12]
+print(reviewers2.24)
+
+
+#Fifth Page
+url2.25 <- ("https://www.amazon.com.au/ThermoPro-TP50-Digital-Thermometer-Temperature/product-reviews/B01H1R0K68/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.25 <- read_html(url2.25)
+
+nameReviewers2.25 <- typeOfReview2.25 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.25 <- nameReviewers2.25 [3:12]
+print(reviewers2.25)
+
+secondProd <- products[[2]]
+secondProd
+
+df2.5 <- bind_cols(Ratings = c(reviewers2.21, reviewers2.22, reviewers2.23,reviewers2.25,reviewers2.24))
+print(df2.5)
+
+secondDf <- data.frame(
+  Product = secondProd,
+  NameOfReviewers = df2.1,
+  TitleOfReviewers = df2.2,
+  TypeOfReviewers = df2.3,
+  Date = df2.4, 
+  Ratings = df2.5
+)
+secondDf
+
+secondProd <- products[[2]]
+secondProd
+
+write.csv(secondDf, "second_product.csv")
+read.csv("second_product.csv")
+```
+
+
+THIRD LINK (PRODUCT) - PALONE Electric Fly Swatter - Name of Reviewer (50)
+```{r}
+session2.26 <- session ("https://www.amazon.com.au/product-reviews/B08VJ7WBRK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers2.26 <- session2.26 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.26 <- nameReviewers2.26 [3:12]
+reviewers2.26
+
+#Second Page
+session2.27 <- session ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers2.27 <- session2.27 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.27 <- nameReviewers2.27 [3:12]
+reviewers2.27
+
+#Third Page
+session2.28 <- session ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers2.28 <- session2.28 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.28 <- nameReviewers2.28 [3:12]
+reviewers2.28
+
+
+#Fourth Page
+session2.29 <- session("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers2.29 <- session2.29 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.29 <- nameReviewers2.29[3:12]
+reviewers2.29
+
+#Fifth Page
+session2.30 <- session("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers2.30 <- session2.30 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers2.30 <- nameReviewers2.30[3:12]
+reviewers2.30
+
+
+df2.6 <- bind_cols(NameOfReviewers = c(reviewers2.27, reviewers2.2, reviewers2.28,reviewers2.29,reviewers2.30))
+print(df2.6)
+```
+THIRD LINK (PRODUCT) - PALONE Electric Fly Swatter - Title of Reviews (50)
+```{r}
+#title of reviews
+#First Page
+url2.31 <- ("https://www.amazon.com.au/product-reviews/B08VJ7WBRK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product2 <- read_html(url2.31)
+
+nameReviewers2.31 <- product2 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers2.31 <- as.character(nameReviewers2.31)  
+nameReviewers2.31 <- gsub("\n", "", nameReviewers2.31)
+
+reviewers2.31 <- nameReviewers2.31 [3:12]
+print(reviewers2.31)
+length(reviewers2.31)
+
+
+#Second Page
+url2.32<- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+product2.32 <- read_html(url2.32)
+
+nameReviewers2.32 <- product2.32 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.32 <- nameReviewers2.32[3:12]  
+
+nameReviewers2.32 <- as.character(reviewers2.32)  
+nameReviewers2.32 <- gsub("\n", "", nameReviewers2.32)  
+
+print(nameReviewers2.32)
+
+
+#Third Page
+url2.33 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product2.33 <- read_html(url2.33)
+
+nameReviewers2.33 <- product2.33 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.33 <- nameReviewers2.33[3:12]  
+
+nameReviewers2.33 <- as.character(nameReviewers2.33)  
+nameReviewers2.33 <- gsub("\n", "", nameReviewers2.33)  
+
+print(nameReviewers2.33)
+
+
+#Fourth Page
+url2.34 <- ("https://amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product2.34 <- read_html(url2.34)
+
+nameReviewers2.34 <- product2.34 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers2.34 <- nameReviewers2.34[3:12]  
+
+nameReviewers2.34 <- as.character(nameReviewers2.34)  
+nameReviewers2.34 <- gsub("\n", "", nameReviewers2.34)  
+
+print(nameReviewers2.34)
+length(nameReviewers2.34)
+
+#Fifth Page
+url2.35 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product2.35 <- read_html(url2.35)
+
+nameReviewers2.35 <- product2.35 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+all_reviewers <- nameReviewers2.35
+
+nameReviewers2.35 <- all_reviewers[1:10] 
+nameReviewers2.35 <- as.character(nameReviewers2.35)
+nameReviewers2.35 <- gsub("\n", "", nameReviewers2.35)
+
+print(nameReviewers2.35)
+
+#binding the datas. 
+df2.7 <- bind_cols(TitleOfReviewers = c(nameReviewers2.31,nameReviewers2.32,nameReviewers2.33,nameReviewers2.34,nameReviewers2.35))
+print(df2.7)
+```
+THIRD LINK (PRODUCT) - PALONE Electric Fly Swatter - Type of Review (50)
+```{r}
+url2.36 <- ("https://www.amazon.com.au/product-reviews/B08VJ7WBRK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview <- read_html(url2.36)
+
+nameReviewers2.36 <- typeOfReview %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.36 <- nameReviewers2.36 [3:12]
+print(reviewers2.36)
+
+
+#Second Page
+url2.37 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview1 <- read_html(url2.37)
+
+nameReviewers2.37 <- typeOfReview1 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.37 <- nameReviewers2.37 [3:12]
+print(reviewers2.37)
+
+#Third Page
+url2.38 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2 <- read_html(url2.38)
+
+nameReviewers2.38 <- typeOfReview2 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.38 <- nameReviewers2.38 [3:12]
+print(reviewers2.38)
+
+#Fourth Page
+url2.39 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview3 <- read_html(url2.39)
+
+nameReviewers2.39 <- typeOfReview3 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.39 <- nameReviewers2.39 [3:12]
+print(reviewers2.39)
+
+
+#Fifth Page
+url2.40 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview4 <- read_html(url2.40)
+
+nameReviewers2.40 <- typeOfReview4 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.40 <- nameReviewers2.40 [3:12]
+print(reviewers2.40)
+
+df2.8 <- bind_cols(TypeOfReviewers = c(reviewers2.36, reviewers2.37, reviewers2.38,reviewers2.39,reviewers2.40))
+print(df2.8)
+```
+THIRD LINK (PRODUCT) - PALONE Electric Fly Swatter - Date (50)
+```{r}
+#First Page
+url2.41 <- ("https://www.amazon.com.au/product-reviews/B08VJ7WBRK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.41 <- read_html(url2.41)
+
+nameReviewers2.41 <- typeOfReview2.41 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.41 <- nameReviewers2.41 [3:12]
+print(reviewers2.41)
+
+#Second Page
+url2.42 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.42 <- read_html(url2.42)
+
+nameReviewers2.42 <- typeOfReview2.42 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.42 <- nameReviewers2.42 [3:12]
+print(reviewers2.42)
+
+#Third Page
+url2.43 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.43 <- read_html(url2.43)
+
+nameReviewers2.43 <- typeOfReview2.43 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.43 <- nameReviewers2.43 [3:12]
+print(reviewers2.43)
+
+#Fourth Page
+url2.44 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.44 <- read_html(url2.44)
+
+nameReviewers2.44 <- typeOfReview2.44 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.44 <- nameReviewers2.44 [3:12]
+print(reviewers2.44)
+
+#Fifth Page
+url2.45 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.45 <- read_html(url2.45)
+
+nameReviewers2.45 <- typeOfReview2.45 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.45 <- nameReviewers2.45 [3:12]
+print(reviewers2.45)
+
+df2.9 <- bind_cols(Date = c(reviewers2.41, reviewers2.42,reviewers2.43,reviewers2.44,reviewers2.45))
+print(df2.9)
+```
+THIRD LINK (PRODUCT) - PALONE Electric Fly Swatter - Rating (50)
+```{r}
+#First Page
+url2.46 <- ("https://www.amazon.com.au/product-reviews/B08VJ7WBRK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.46 <- read_html(url2.46)
+
+nameReviewers2.46 <- typeOfReview2.46 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.46 <- nameReviewers2.46 [3:12]
+print(reviewers2.46)
+
+#Second Page
+url2.47 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.47 <- read_html(url2.47)
+
+nameReviewers2.47 <- typeOfReview2.47 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.47 <- nameReviewers2.47 [3:12]
+print(reviewers2.47)
+
+#Third Page
+url2.48 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.48 <- read_html(url2.48)
+
+nameReviewers2.48 <- typeOfReview2.48 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.48 <- nameReviewers2.48 [3:12]
+print(reviewers2.48)
+
+
+#Fourth Page
+url2.49 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.49 <- read_html(url2.49)
+
+nameReviewers2.49 <- typeOfReview2.49 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.49 <- nameReviewers2.49 [3:12]
+print(reviewers2.49)
+
+
+#Fifth Page
+url2.50 <- ("https://www.amazon.com.au/PALONE-Electric-Rechargeable-Mosquito-Suitable/product-reviews/B08VJ7WBRK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.50 <- read_html(url2.50)
+
+nameReviewers2.50 <- typeOfReview2.50 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.50 <- nameReviewers2.50 [3:12]
+print(reviewers2.50)
+
+thirdProd <- products[[3]]
+thirdProd
+
+df2.10 <- bind_cols(Ratings = c(reviewers2.46, reviewers2.47, reviewers2.48,reviewers2.50,reviewers2.49))
+print(df2.10)
+
+thirdDf <- data.frame(
+  Product = thirdProd,
+  NameOfReviewers = df2.6,
+  TitleOfReviewers = df2.7,
+  TypeOfReviewers = df2.8,
+  Date = df2.9, 
+  Ratings = df2.10
+)
+thirdDf
+
+thirdProd <- products[[3]]
+thirdProd
+
+write.csv(thirdDf, "third_product.csv")
+read.csv("third_product.csv")
+```
+
+
+
+FOURTH LINK (PRODUCT) - XLUX Soil Moisture Sensor Meter Water Monitor - Name of Reviewer (50)
+```{r}
+session2.51 <- session ("https://www.amazon.com.au/product-reviews/B081DLVGC8/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers2.51 <- session2.51 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.51 <- nameReviewers2.51 [3:12]
+reviewers2.51
+
+#Second Page
+session2.52 <- session ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers2.52 <- session2.52 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.52 <- nameReviewers2.52 [3:12]
+reviewers2.52
+
+#Third Page
+session2.53 <- session ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers2.53 <- session2.53 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.53 <- nameReviewers2.53 [3:12]
+reviewers2.53
+
+
+#Fourth Page
+session2.54 <- session("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers2.54 <- session2.54 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers2.54 <- nameReviewers2.54[3:12]
+reviewers2.54
+
+#Fifth Page
+session2.55 <- session("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers2.55 <- session2.55 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers2.55 <- nameReviewers2.55[3:12]
+reviewers2.55
+
+
+df2.11 <- bind_cols(NameOfReviewers = c(reviewers2.51,reviewers2.52, reviewers2.53, reviewers2.54,reviewers2.55))
+print(df2.11)
+```
+FOURTH LINK (PRODUCT) - XLUX Soil Moisture Sensor Meter Water Monitor - Title of Reviews (50)
+```{r}
+session2.51 <- session ("https://www.amazon.com.au/product-reviews/B081DLVGC8/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers2.51 <- session2.51 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+reviewers2.51 <- nameReviewers2.51 [3:12]
+reviewers2.51
+
+nameReviewers2.51 <- as.character(nameReviewers2.51)  
+nameReviewers2.51 <- gsub("\n", "", nameReviewers2.51)
+
+print(nameReviewers2.51)
+
+#Second Page
+session2.52 <- session ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers2.52 <- session2.52 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+reviewers2.52 <- nameReviewers2.52 [3:12]
+reviewers2.52
+
+nameReviewers2.52 <- as.character(nameReviewers2.52)  
+nameReviewers2.52 <- gsub("\n", "", nameReviewers2.52)
+
+print(nameReviewers2.52)
+
+
+#Third Page
+session2.53 <- session ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers2.53 <- session2.53 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+reviewers2.53 <- nameReviewers2.53 [3:12]
+reviewers2.53
+
+nameReviewers2.53 <- as.character(nameReviewers2.53)  
+nameReviewers2.53 <- gsub("\n", "", nameReviewers2.53)
+
+print(nameReviewers2.53)
+
+#Fourth Page
+session2.54 <- session("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers2.54 <- session2.54 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+reviewers2.54 <- nameReviewers2.54[3:12]
+reviewers2.54
+
+nameReviewers2.54 <- as.character(nameReviewers2.54)  
+nameReviewers2.54 <- gsub("\n", "", nameReviewers2.54)
+
+print(nameReviewers2.54)
+#Fifth Page
+session2.55 <- session("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers2.55 <- session2.55 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+
+reviewers2.55 <- nameReviewers2.55[3:12]
+reviewers2.55
+
+nameReviewers2.55 <- as.character(nameReviewers2.55)  
+nameReviewers2.55 <- gsub("\n", "", nameReviewers2.55)
+
+print(nameReviewers2.55)
+
+df2.12 <- bind_cols(TitleOfReviews = c(nameReviewers2.51, nameReviewers2.52, nameReviewers2.53,nameReviewers2.54,nameReviewers2.55))
+print(df2.12)
+```
+FOURTH LINK (PRODUCT) - XLUX Soil Moisture Sensor Meter Water Monitor - Type of Review (50)
+```{r}
+#First Page
+url2.56 <- ("https://www.amazon.com.au/product-reviews/B081DLVGC8/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview <- read_html(url2.56)
+
+nameReviewers2.56 <- typeOfReview %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.56 <- nameReviewers2.56 [3:12]
+print(reviewers2.56)
+
+
+#Second Page
+url2.57 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview1 <- read_html(url2.57)
+
+nameReviewers2.57 <- typeOfReview1 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.57 <- nameReviewers2.57 [3:12]
+print(reviewers2.57)
+
+#Third Page
+url2.58 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2 <- read_html(url2.58)
+
+nameReviewers2.58 <- typeOfReview2 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.58 <- nameReviewers2.58 [3:12]
+print(reviewers2.58)
+
+#Fourth Page
+url2.59 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview3 <- read_html(url2.59)
+
+nameReviewers2.59 <- typeOfReview3 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.59 <- nameReviewers2.59 [3:12]
+print(reviewers2.59)
+
+
+#Fifth Page
+url2.60 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview4 <- read_html(url2.60)
+
+nameReviewers2.60 <- typeOfReview4 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers2.60 <- nameReviewers2.60 [3:12]
+print(reviewers2.60)
+
+df2.13 <- bind_cols(TypeOfReviewers = c(reviewers2.56, reviewers2.57, reviewers2.58,reviewers2.59,reviewers2.60))
+print(df2.13)
+```
+FOURTH LINK (PRODUCT) - XLUX Soil Moisture Sensor Meter Water Monitor - Date (50)
+```{r}
+url2.61 <- ("https://www.amazon.com.au/product-reviews/B081DLVGC8/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.61 <- read_html(url2.61)
+
+nameReviewers2.61 <- typeOfReview2.61 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.61 <- nameReviewers2.61 [3:12]
+print(reviewers2.61)
+
+#Second Page
+url2.62 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.62 <- read_html(url2.62)
+
+nameReviewers2.62 <- typeOfReview2.62 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.62 <- nameReviewers2.62 [3:12]
+print(reviewers2.62)
+
+#Third Page
+url2.63 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.63 <- read_html(url2.63)
+
+nameReviewers2.63 <- typeOfReview2.63 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.63 <- nameReviewers2.63 [3:12]
+print(reviewers2.63)
+
+#Fourth Page
+url2.64 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.64 <- read_html(url2.64)
+
+nameReviewers2.64 <- typeOfReview2.64 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.64 <- nameReviewers2.64 [3:12]
+print(reviewers2.64)
+
+#Fifth Page
+url2.65 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.65 <- read_html(url2.65)
+
+nameReviewers2.65 <- typeOfReview2.65 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers2.65 <- nameReviewers2.65 [3:12]
+print(reviewers2.65)
+
+df2.14 <- bind_cols(Date = c(reviewers2.61, reviewers2.62,reviewers2.63,reviewers2.64,reviewers2.65))
+print(df2.14)
+```
+FOURTH LINK (PRODUCT) - XLUX Soil Moisture Sensor Meter Water Monitor - Rating (50)
+```{r}
+#First Page
+url2.66 <- ("https://www.amazon.com.au/product-reviews/B081DLVGC8/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview2.66 <- read_html(url2.66)
+
+nameReviewers2.66 <- typeOfReview2.66 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.66 <- nameReviewers2.66 [3:12]
+print(reviewers2.66)
+
+#Second Page
+url2.67 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview2.67 <- read_html(url2.67)
+
+nameReviewers2.67 <- typeOfReview2.67 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.67 <- nameReviewers2.67 [3:12]
+print(reviewers2.67)
+
+#Third Page
+url2.68 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview2.68 <- read_html(url2.68)
+
+nameReviewers2.68 <- typeOfReview2.68 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.68 <- nameReviewers2.68 [3:12]
+print(reviewers2.68)
+
+
+#Fourth Page
+url2.69 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview2.69 <- read_html(url2.69)
+
+nameReviewers2.69 <- typeOfReview2.69 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.69 <- nameReviewers2.69 [3:12]
+print(reviewers2.69)
+
+
+#Fifth Page
+url2.70 <- ("https://www.amazon.com.au/XLUX-Moisture-Hygrometer-Gardening-Batteries/product-reviews/B081DLVGC8/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview2.70 <- read_html(url2.70)
+
+nameReviewers2.70 <- typeOfReview2.70 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers2.70 <- nameReviewers2.70 [3:12]
+print(reviewers2.70)
+
+
+df2.15 <- bind_cols(Ratings = c(reviewers2.66, reviewers2.67, reviewers2.68,reviewers2.70,reviewers2.69))
+print(df2.15)
+
+fourthDf <- data.frame(
+  Product = fourthProd,
+  NameOfReviewers = df2.11,
+  TitleOfReviewers = df2.12,
+  TypeOfReviewers = df2.13,
+  Date = df2.14, 
+  Ratings = df2.15
+)
+fourthDf
+
+fourthProd <- products[[4]]
+fourthProd
+
+write.csv(fourthDf, "fourth_product.csv")
+read.csv("fourth_product.csv")
+```
+
+
+NOTE: This link has only limited scrapable data hence why it only has 30 items.
+FIFTH LINK (PRODUCT) - Jabykare Extra Large Outdoor Rug - Name of Reviewer (30)
+```{r}
+session3.1 <- session ("https://www.amazon.com.au/product-reviews/B0CB5SWYM1/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers3.1 <- session3.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers3.1 <- nameReviewers3.1 [3:12]
+reviewers3.1
+
+#Second Page
+session3.2 <- session ("https://www.amazon.com.au/Jabykare-Extra-Large-Outdoor-150x245cm/product-reviews/B0CB5SWYM1/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers3.2 <- session3.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers3.2 <- nameReviewers3.2 [3:12]
+reviewers3.2
+
+
+df2.15 <- bind_cols(NameOfReviewers = c(reviewers3.1, reviewers3.2))
+print(df2.15)
+```
+FIFTH LINK (PRODUCT) - Jabykare Extra Large Outdoor Rug - Title of Reviews (30)
+```{r}
+session3.11 <- session ("https://www.amazon.com.au/product-reviews/B0CB5SWYM1/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers3.11 <- session3.11 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+reviewers3.11 <- nameReviewers3.11 [3:12]
+reviewers3.11
+
+nameReviewers3.11 <- as.character(nameReviewers3.11)  
+nameReviewers3.11 <- gsub("\n", "", nameReviewers3.11)
+
+print(nameReviewers3.11)
+length(nameReviewers3.11)
+
+#Second Page
+session3.12 <- session ("https://www.amazon.com.au/Jabykare-Extra-Large-Outdoor-150x245cm/product-reviews/B0CB5SWYM1/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers3.12 <- session3.12 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+
+allReviewers <- nameReviewers3.12
+
+
+nameReviewers3.12 <- allReviewers[1:10]
+
+nameReviewers3.12 <- as.character(nameReviewers3.12)
+nameReviewers3.12 <- gsub("\n", "", nameReviewers3.12)
+
+print(nameReviewers3.12)
+length(nameReviewers3.12)
+
+
+df2.13 <- bind_cols(TitleOfReviews = c(nameReviewers3.11, nameReviewers3.12))
+print(df2.13)
+```
+FIFTH LINK (PRODUCT) - Jabykare Extra Large Outdoor Rug - Type of Review (30)
+```{r}
+url4 <- ("https://www.amazon.com.au/product-reviews/B0CB5SWYM1/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview4.1 <- read_html(url4)
+
+nameReviewers4.1 <- typeOfReview4.1 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers4.1 <- nameReviewers4.1 [3:12]
+print(reviewers4.1)
+
+#Second Page
+url3.1 <- ("https://www.amazon.com.au/Jabykare-Extra-Large-Outdoor-150x245cm/product-reviews/B0CB5SWYM1/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview4.2 <- read_html(url3.1)
+
+nameReviewers4.2 <- typeOfReview4.2 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers4.2 <- nameReviewers4.2 [3:12]
+print(reviewers4.2)
+
+
+df4.1 <- bind_cols(TypeOfReviewers = c(reviewers4.1, reviewers4.2))
+print(df4.1)
+```
+FIFTH LINK (PRODUCT) - Jabykare Extra Large Outdoor Rug - Date (30)
+```{r}
+#First Page
+url4.3 <- ("https://www.amazon.com.au/product-reviews/B0CB5SWYM1/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview4.3 <- read_html(url4.3)
+
+nameReviewers4.3 <- typeOfReview4.3 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers4.3 <- nameReviewers4.3 [3:12]
+print(reviewers4.3)
+
+#Second Page
+url4.4 <- ("https://www.amazon.com.au/Jabykare-Extra-Large-Outdoor-150x245cm/product-reviews/B0CB5SWYM1/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview4.4 <- read_html(url4.4)
+
+nameReviewers4.4 <- typeOfReview4.4 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers4.4 <- nameReviewers4.4 [3:12]
+print(reviewers4.4)
+
+
+
+df4.2 <- bind_cols(Date = c(reviewers4.3, reviewers4.4))
+print(df4.2)
+```
+FIFTH LINK (PRODUCT) - Jabykare Extra Large Outdoor Rug - Rating (30)
+```{r}
+url4.5 <- ("https://www.amazon.com.au/product-reviews/B0CB5SWYM1/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview4.5 <- read_html(url4.5)
+
+nameReviewers4.5 <- typeOfReview4.5 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers4.5 <- nameReviewers4.5 [3:12]
+print(reviewers4.5)
+
+#Second Page
+url4.6 <- ("https://www.amazon.com.au/Jabykare-Extra-Large-Outdoor-150x245cm/product-reviews/B0CB5SWYM1/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview4.6 <- read_html(url4.6)
+
+nameReviewers4.6 <- typeOfReview4.6 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers4.6 <- nameReviewers4.6 [3:12]
+print(reviewers4.6)
+
+
+fifthProd <- products[[5]]
+fifthProd
+
+df4.3 <- bind_cols(Ratings = c(reviewers4.5, reviewers4.6))
+print(df4.3)
+
+fifthDf <- data.frame(
+  Product = fifthProd,
+  NameOfReviewer = df2.15,
+  TitleOfReviews = df2.13,
+  TypeOfReview = df4.1,
+  Date = df4.2,
+  Rating = df4.3
+)
+fifthDf
+
+write.csv(fifthDf, "fifth_product.csv")
+read.csv("fifth_product.csv")
+```
+
+
+
+SIXTH LINK (PRODUCT) - ThermoPro TP49W - Name of Reviwewer (50)
+```{r}
+#First Page
+session6.1 <- session ("https://www.amazon.com.au/product-reviews/B07WCR5Y4B/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers6.1 <- session6.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers6.1 <- nameReviewers6.1 [3:12]
+reviewers6.1
+
+#Second Page
+session6.2 <- session ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers6.2 <- session6.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers6.2 <- nameReviewers6.2 [3:12]
+reviewers6.2
+
+#Third Page
+session6.3 <- session ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers6.3 <- session6.3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers6.3 <- nameReviewers6.3 [3:12]
+reviewers6.3
+
+
+#Fourth Page
+session6.4 <- session("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers6.4 <- session6.4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers6.4 <- nameReviewers6.4[3:12]
+reviewers6.4
+
+#Fifth Page
+session6.5 <- session("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers6.5 <- session6.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers6.5 <- nameReviewers6.5[3:12]
+reviewers6.5
+
+
+sixthProd6.1 <- products[[6]]
+sixthProd6.1
+
+
+df6.1 <- bind_cols(NameOfReviewers = c(reviewers6.1, reviewers6.2, reviewers6.3,reviewers6.4,reviewers6.5))
+print(df6.1)
+```
+SIXTH LINK (PRODUCT) - ThermoPro TP49W - Title of Reviewer (50)
+```{r}
+#title of reviews
+#First Page
+url6.6 <- ("https://www.amazon.com.au/product-reviews/B07WCR5Y4B/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product6.6 <- read_html(url6.6)
+
+nameReviewers6.6 <- product6.6 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers6.6 <- as.character(nameReviewers6.6)  
+nameReviewers6.6 <- gsub("\n", "", nameReviewers6.6)
+
+reviewers6.6 <- nameReviewers6.6 [1:10]
+print(reviewers6.6)
+
+
+#Second Page
+url6.7<- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+product6.7 <- read_html(url6.7)
+
+nameReviewers6.7 <- product6.7 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers6.7 <- nameReviewers6.7[1:10]  
+
+nameReviewers6.7 <- as.character(reviewers6.7)  
+nameReviewers6.7 <- gsub("\n", "", nameReviewers6.7)  
+
+print(nameReviewers6.7)
+
+
+#Third Page
+url6.8 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product6.8 <- read_html(url6.8)
+
+nameReviewers6.8 <- product6.8 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers6.8 <- nameReviewers6.8[1:10]  
+
+nameReviewers6.8 <- as.character(nameReviewers6.8)  
+nameReviewers6.8 <- gsub("\n", "", nameReviewers6.8)  
+
+print(nameReviewers6.8)
+
+
+#Fourth Page
+url6.9 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product6.9 <- read_html(url6.9)
+
+nameReviewers6.9 <- product6.9 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers6.9 <- nameReviewers6.9[1:10]  
+
+nameReviewers6.9 <- as.character(nameReviewers6.9)  
+nameReviewers6.9 <- gsub("\n", "", nameReviewers6.9)  
+
+print(nameReviewers6.9)
+
+
+#Fifth Page
+url6.10 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product6.10 <- read_html(url6.10)
+
+nameReviewers6.10 <- product6.10 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers6.10 <- nameReviewers6.10[1:10]  
+
+nameReviewers6.10 <- as.character(nameReviewers6.10)  
+nameReviewers6.10 <- gsub("\n", "", nameReviewers6.10)  
+
+print(nameReviewers6.10)
+
+#binding the datas. 
+df6.6 <- bind_cols(TitleOfReviewers = c(nameReviewers6.6,nameReviewers6.7,nameReviewers6.8,nameReviewers6.9,nameReviewers6.10))
+print(df6.6)
+```
+SIXTH LINK (PRODUCT) - ThermoPro TP49W - Type of Reviews (50)
+```{r}
+#Type of Reviews
+#First Page
+url6.13 <- ("https://www.amazon.com.au/product-reviews/B07WCR5Y4B/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview6.13 <- read_html(url6.13)
+
+nameReviewers6.13 <- typeOfReview6.13 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers6.13 <- nameReviewers6.13 [1:10]
+print(reviewers6.13)
+
+
+#Second Page
+url6.12 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview6.12 <- read_html(url6.12)
+
+nameReviewers6.12 <- typeOfReview6.12 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers6.12 <- nameReviewers6.12 [1:10]
+print(reviewers6.12)
+
+#Third Page
+url6.13 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview6.13 <- read_html(url6.13)
+
+nameReviewers6.13 <- typeOfReview6.13 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers6.13 <- nameReviewers6.13 [1:10]
+print(reviewers6.13)
+
+#Fourth Page
+url6.14 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview6.14 <- read_html(url6.14)
+
+nameReviewers6.14 <- typeOfReview6.14 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers6.14 <- nameReviewers6.14 [1:10]
+print(reviewers6.14)
+
+
+#Fifth Page
+url6.15 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview6.15 <- read_html(url6.15)
+
+nameReviewers6.15<- typeOfReview6.15 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers6.15<- nameReviewers6.15[1:10]
+print(reviewers6.15)
+
+df6.7 <- bind_cols(TypeOfReviewers = c(reviewers6.13, reviewers6.12, reviewers6.13,reviewers6.14,reviewers6.15))
+print(df6.7)
+```
+SIXTH LINK (PRODUCT) - ThermoPro TP49W - Date (50)
+```{r}
+#First Page
+url6.16 <- ("https://www.amazon.com.au/product-reviews/B07WCR5Y4B/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview6.16 <- read_html(url6.16)
+
+nameReviewers6.16 <- typeOfReview6.16 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers6.16 <- nameReviewers6.16 [3:12]
+print(reviewers6.16)
+
+#Second Page
+url6.17 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview6.17 <- read_html(url6.17)
+
+nameReviewers6.17 <- typeOfReview6.17 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers6.17 <- nameReviewers6.17 [3:12]
+print(reviewers6.17)
+
+#Third Page
+url6.18 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview6.18 <- read_html(url6.18)
+
+nameReviewers6.18 <- typeOfReview6.18 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers6.18 <- nameReviewers6.18 [3:12]
+print(reviewers6.18)
+
+#Fourth Page
+url6.19 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview6.19 <- read_html(url6.19)
+
+nameReviewers6.19 <- typeOfReview6.19 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers6.19 <- nameReviewers6.19 [3:12]
+print(reviewers6.19)
+
+#Fifth Page
+url6.20<- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview6.20 <- read_html(url6.20)
+
+nameReviewers6.20 <- typeOfReview6.20 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers6.20 <- nameReviewers6.20 [3:12]
+print(reviewers6.20)
+
+df6.8 <- bind_cols(Date = c(reviewers6.16, reviewers6.17,reviewers6.18,reviewers6.19,reviewers6.20))
+print(df6.8)
+```
+SIXTH LINK (PRODUCT) - ThermoPro TP49W - Rating (50)
+```{r}
+#First Page
+url6.21 <- ("https://www.amazon.com.au/product-reviews/B07WCR5Y4B/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview6.21 <- read_html(url6.21)
+
+nameReviewers6.21 <- typeOfReview6.21 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers6.21 <- nameReviewers6.21 [1:10]
+print(reviewers6.21)
+
+#Second Page
+url6.22 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview6.22 <- read_html(url6.22)
+
+nameReviewers6.22 <- typeOfReview6.22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers6.22 <- nameReviewers6.22 [1:10]
+print(reviewers6.22)
+
+#Third Page
+url6.23 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview6.23 <- read_html(url6.23)
+
+nameReviewers6.23 <- typeOfReview6.23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers6.23 <- nameReviewers6.23 [1:10]
+print(reviewers6.23)
+
+
+#Fourth Page
+url6.24 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview6.24 <- read_html(url6.24)
+
+nameReviewers6.24 <- typeOfReview6.24 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers6.24 <- nameReviewers6.24 [1:10]
+print(reviewers6.24)
+
+
+#Fifth Page
+url6.25 <- ("https://www.amazon.com.au/ThermoPro-Hygrometer-Thermometer-Humidity-Greenhouse/product-reviews/B07WCR5Y4B/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview6.25 <- read_html(url6.25)
+
+nameReviewers6.25 <- typeOfReview6.25 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers6.25 <- nameReviewers6.25 [1:10]
+print(reviewers6.25)
+
+df6.9 <- bind_cols(Ratings = c(reviewers6.21, reviewers6.22, reviewers6.23,reviewers6.25,reviewers6.24))
+print(df6.9)
+
+sixthProd <- data.frame(
+  Product = sixthProd6.1,
+  NameOfReviewer = df6.1,
+  TitleOfReviews = df6.6,
+  TypeOfReview = df6.7,
+  Date = df6.8, 
+  Rating = df6.9
+)
+sixthProd
+
+write.csv(sixthProd, "sixth_product.csv")
+read.csv("sixth_product.csv")
+```
+
+
+
+
+SEVENTH LINK (PRODUCT) - Govee WiFi Thermometer Hygrometer - Name of Reviwewer (50)
+```{r}
+#First Page
+session7.1 <- session ("https://www.amazon.com.au/product-reviews/B09CKZGBC7/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers7.1 <- session7.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers7.1 <- nameReviewers7.1 [3:12]
+reviewers7.1
+
+#Second Page
+session7.2 <- session ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers7.2 <- session7.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers7.2 <- nameReviewers7.2 [3:12]
+reviewers7.2
+
+#Third Page
+session7.3 <- session ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers7.3 <- session7.3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers7.3 <- nameReviewers7.3 [3:12]
+reviewers7.3
+
+
+#Fourth Page
+session7.4 <- session("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers7.4 <- session7.4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers7.4 <- nameReviewers7.4[3:12]
+reviewers7.4
+
+#Fifth Page
+session7.5 <- session("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers7.5 <- session7.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers7.5 <- nameReviewers7.5[3:12]
+reviewers7.5
+
+seventhProd7.1 <- products[[7]]
+seventhProd7.1
+
+seventhProd<- bind_cols(Product = c(seventhProd7.1))
+print(seventhProd)
+
+
+df7.1 <- bind_cols(NameOfReviewers = c(reviewers7.1, reviewers7.2, reviewers7.3,reviewers7.4,reviewers7.5))
+print(df7.1)
+```
+SEVENTH LINK (PRODUCT) - Govee WiFi Thermometer Hygrometer - Title of Reviewer (50)
+```{r}
+#title of reviews
+#First Page
+url7.6 <- ("https://www.amazon.com.au/product-reviews/B09CKZGBC7/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product7.6 <- read_html(url7.6)
+
+nameReviewers7.6 <- product7.6 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers7.6 <- as.character(nameReviewers7.6)  
+nameReviewers7.6 <- gsub("\n", "", nameReviewers7.6)
+
+reviewers7.6 <- nameReviewers7.6 [1:10]
+print(reviewers7.6)
+
+
+#Second Page
+url7.7<- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+product7.7 <- read_html(url7.7)
+
+nameReviewers7.7 <- product7.7 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers7.7 <- nameReviewers7.7[1:10]  
+
+nameReviewers7.7 <- as.character(reviewers7.7)  
+nameReviewers7.7 <- gsub("\n", "", nameReviewers7.7)  
+
+print(nameReviewers7.7)
+
+
+#Third Page
+url7.8 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product7.8 <- read_html(url7.8)
+
+nameReviewers7.8 <- product7.8 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers7.8 <- nameReviewers7.8[1:10]  
+
+nameReviewers7.8 <- as.character(nameReviewers7.8)  
+nameReviewers7.8 <- gsub("\n", "", nameReviewers7.8)  
+
+print(nameReviewers7.8)
+
+
+#Fourth Page
+url7.9 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product7.9 <- read_html(url7.9)
+
+nameReviewers7.9 <- product7.9 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers7.9 <- nameReviewers7.9[1:10]  
+
+nameReviewers7.9 <- as.character(nameReviewers7.9)  
+nameReviewers7.9 <- gsub("\n", "", nameReviewers7.9)  
+
+print(nameReviewers7.9)
+
+
+#Fifth Page
+url7.10 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product7.10 <- read_html(url7.10)
+
+nameReviewers7.10 <- product7.10 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers7.10 <- nameReviewers7.10[1:10]  
+
+nameReviewers7.10 <- as.character(nameReviewers7.10)  
+nameReviewers7.10 <- gsub("\n", "", nameReviewers7.10)  
+
+print(nameReviewers7.10)
+
+#binding the datas. 
+df7.2 <- bind_cols(TitleOfReviewers = c(nameReviewers7.6,nameReviewers7.7,nameReviewers7.8,nameReviewers7.9,nameReviewers7.10))
+print(df7.2)
+```
+SEVENTH LINK (PRODUCT) - Govee WiFi Thermometer Hygrometer - Type of Reviews (50)
+```{r}
+#Type of Reviews
+#First Page
+url7.11 <- ("https://www.amazon.com.au/product-reviews/B09CKZGBC7/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview7.11 <- read_html(url7.11)
+
+nameReviewers7.11 <- typeOfReview7.11 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers7.11 <- nameReviewers7.11 [1:10]
+print(reviewers7.11)
+
+
+#Second Page
+url7.12 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview7.12 <- read_html(url7.12)
+
+nameReviewers7.12 <- typeOfReview7.12 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers7.12 <- nameReviewers7.12 [1:10]
+print(reviewers7.12)
+
+#Third Page
+url7.13 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview7.13 <- read_html(url7.13)
+
+nameReviewers7.13 <- typeOfReview7.13 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers7.13 <- nameReviewers7.13 [1:10]
+print(reviewers7.13)
+
+#Fourth Page
+url7.14 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview7.14 <- read_html(url7.14)
+
+nameReviewers7.14 <- typeOfReview7.14 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers7.14 <- nameReviewers7.14 [1:10]
+print(reviewers7.14)
+
+
+#Fifth Page
+url7.15 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview7.15 <- read_html(url7.15)
+
+nameReviewers7.15<- typeOfReview7.15 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers7.15<- nameReviewers7.15[1:10]
+print(reviewers7.15)
+
+df7.3 <- bind_cols(TypeOfReviewers = c(reviewers7.11, reviewers7.12, reviewers7.13,reviewers7.14,reviewers7.15))
+print(df7.3)
+```
+SEVENTH LINK (PRODUCT) - Govee WiFi Thermometer Hygrometer - Date (50)
+```{r}
+#First Page
+url7.16 <- ("https://www.amazon.com.au/product-reviews/B09CKZGBC7/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview7.16 <- read_html(url7.16)
+
+nameReviewers7.16 <- typeOfReview7.16 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers7.16 <- nameReviewers7.16 [3:12]
+print(reviewers7.16)
+
+#Second Page
+url7.17 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview7.17 <- read_html(url7.17)
+
+nameReviewers7.17 <- typeOfReview7.17 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers7.17 <- nameReviewers7.17 [3:12]
+print(reviewers7.17)
+
+#Third Page
+url7.18 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview7.18 <- read_html(url7.18)
+
+nameReviewers7.18 <- typeOfReview7.18 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers7.18 <- nameReviewers7.18 [3:12]
+print(reviewers7.18)
+
+#Fourth Page
+url7.19 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview7.19 <- read_html(url7.19)
+
+nameReviewers7.19 <- typeOfReview7.19 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers7.19 <- nameReviewers7.19 [3:12]
+print(reviewers7.19)
+
+#Fifth Page
+url7.20<- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview7.20 <- read_html(url7.20)
+
+nameReviewers7.20 <- typeOfReview7.20 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers7.20 <- nameReviewers7.20 [3:12]
+print(reviewers7.20)
+
+df7.4 <- bind_cols(Date = c(reviewers7.16, reviewers7.17,reviewers7.18,reviewers7.19,reviewers7.20))
+print(df7.4)
+```
+SEVENTH LINK (PRODUCT) - Govee WiFi Thermometer Hygrometer - Ratings (50)
+```{r}
+#First Page
+url7.21 <- ("https://www.amazon.com.au/product-reviews/B09CKZGBC7/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview7.21 <- read_html(url7.21)
+
+nameReviewers7.21 <- typeOfReview7.21 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers7.21 <- nameReviewers7.21 [3:12]
+print(reviewers7.21)
+
+#Second Page
+url7.22 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview7.22 <- read_html(url7.22)
+
+nameReviewers7.22 <- typeOfReview7.22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers7.22 <- nameReviewers7.22 [3:12]
+print(reviewers7.22)
+
+#Third Page
+url7.23 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview7.23 <- read_html(url7.23)
+
+nameReviewers7.23 <- typeOfReview7.23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers7.23 <- nameReviewers7.23 [3:12]
+print(reviewers7.23)
+
+
+#Fourth Page
+url7.24 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview7.24 <- read_html(url7.24)
+
+nameReviewers7.24 <- typeOfReview7.24 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers7.24 <- nameReviewers7.24 [3:12]
+print(reviewers7.24)
+
+
+#Fifth Page
+url7.25 <- ("https://www.amazon.com.au/Govee-Thermometer-Hygrometer-Temperature-Notification/product-reviews/B09CKZGBC7/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview7.25 <- read_html(url7.25)
+
+nameReviewers7.25 <- typeOfReview7.25 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers7.25 <- nameReviewers7.25 [3:12]
+print(reviewers7.25)
+
+df7.5 <- bind_cols(Ratings = c(reviewers7.21, reviewers7.22, reviewers7.23,reviewers7.25,reviewers7.24))
+print(df7.5)
+
+seventhDf <- data.frame(
+  Product = seventhProd7.1,
+  NameOfReviewer = df7.1,
+  TitleOfReviews = df7.2,
+  TypeOfReview = df7.3,
+  Date = df7.4, 
+  Rating = df7.5
+)
+seventhDf
+
+write.csv(seventhDf, "seventh_product.csv")
+read.csv("seventh_product.csv")
+```
+
+
+
+EIGHT LINK (PRODUCT) - 40 PCS Sticky Traps - Name of Reviwewer (50)
+```{r}
+#First Page
+session8.1 <- session ("https://www.amazon.com.au/product-reviews/B09ZWTZHYK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers8.1 <- session8.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers8.1 <- nameReviewers8.1 [3:12]
+reviewers8.1
+
+#Second Page
+session8.2 <- session ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers8.2 <- session8.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers8.2 <- nameReviewers8.2 [3:12]
+reviewers8.2
+
+#Third Page
+session8.3 <- session ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers8.3 <- session8.3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers8.3 <- nameReviewers8.3 [3:12]
+reviewers8.3
+
+
+#Fourth Page
+session8.4 <- session("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers8.4 <- session8.4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers8.4 <- nameReviewers8.4[3:12]
+reviewers8.4
+
+#Fifth Page
+session8.5 <- session("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers8.5 <- session8.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers8.5 <- nameReviewers8.5[3:12]
+reviewers8.5
+
+eightProd8.1 <- products[[8]]
+eightProd8.1
+
+eightProd<- bind_cols(Product = c(eightProd8.1))
+print(eightProd)
+
+
+df8.1 <- bind_cols(NameOfReviewers = c(reviewers8.1, reviewers8.2, reviewers8.3,reviewers8.4,reviewers8.5))
+print(df8.1)
+```
+EIGHT LINK (PRODUCT) - 40 PCS Sticky Traps - Title of Reviews (50)
+```{r}
+#title of reviews
+#First Page
+url8.6 <- ("https://www.amazon.com.au/product-reviews/B09ZWTZHYK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+product8.6 <- read_html(url8.6)
+
+nameReviewers8.6 <- product8.6 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+nameReviewers8.6 <- as.character(nameReviewers8.6)  
+nameReviewers8.6 <- gsub("\n", "", nameReviewers8.6)
+
+reviewers8.6 <- nameReviewers8.6 [3:12]
+print(reviewers8.6)
+
+length(reviewers8.6)
+
+#Second Page
+url8.7<- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+product8.7 <- read_html(url8.7)
+
+nameReviewers8.7 <- product8.7 %>%
+  html_nodes("a.review-title") %>%  
+  html_text() 
+
+reviewers8.7 <- nameReviewers8.7[3:12]  
+
+nameReviewers8.7 <- as.character(reviewers8.7)  
+nameReviewers8.7 <- gsub("\n", "", nameReviewers8.7)  
+
+print(nameReviewers8.7)
+length(nameReviewers8.7)
+
+# Third Page
+url8.8 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product8.8 <- read_html(url8.8)
+
+nameReviewers8.8 <- product8.8 %>%
+  html_nodes("span.cr-original-review-content") %>%
+  html_text()
+
+
+reviewers8.8 <- nameReviewers8.8[1:min(length(nameReviewers8.8), 10)]
+
+nameReviewers8.8 <- as.character(reviewers8.8)
+nameReviewers8.8 <- gsub("\n", "", nameReviewers8.8)
+
+print(nameReviewers8.8)
+length(nameReviewers8.8)
+
+# Fourth Page
+url8.9 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product8.9 <- read_html(url8.9)
+
+nameReviewers8.9 <- product8.9 %>%
+  html_nodes("span.cr-original-review-content") %>%
+  html_text()
+
+
+reviewers8.9 <- nameReviewers8.9[3:min(length(nameReviewers8.9), 12)]
+
+nameReviewers8.9 <- as.character(reviewers8.9)
+nameReviewers8.9 <- gsub("\n", "", nameReviewers8.9)
+
+print(nameReviewers8.9)
+length(nameReviewers8.9)
+
+
+
+#Fifth Page
+url8.10 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product8.10 <- read_html(url8.10)
+
+nameReviewers8.10 <- product8.10 %>%
+  html_nodes("span.cr-original-review-content") %>%  
+  html_text() 
+
+reviewers8.10 <- nameReviewers8.10[3:12]  
+
+nameReviewers8.10 <- as.character(nameReviewers8.10)  
+nameReviewers8.10 <- gsub("\n", "", nameReviewers8.10)  
+
+print(nameReviewers8.10)
+length(nameReviewers8.10)
+
+#binding the datas. 
+df8.2 <- bind_cols(TitleOfReviewers = c(nameReviewers8.6,nameReviewers8.7,nameReviewers8.8,nameReviewers8.9,nameReviewers8.10))
+print(df8.2)
+```
+EIGHT LINK (PRODUCT) - 40 PCS Sticky Traps - Type of Reviews (50)
+```{r}
+#Type of Reviews
+#First Page
+url8.11 <- ("https://www.amazon.com.au/product-reviews/B09ZWTZHYK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview8.11 <- read_html(url8.11)
+
+nameReviewers8.11 <- typeOfReview8.11 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers8.11 <- nameReviewers8.11 [3:12]
+print(reviewers8.11)
+
+
+#Second Page
+url8.12 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview8.12 <- read_html(url8.12)
+
+nameReviewers8.12 <- typeOfReview8.12 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers8.12 <- nameReviewers8.12 [3:12]
+print(reviewers8.12)
+
+#Third Page
+url8.13 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview8.13 <- read_html(url8.13)
+
+nameReviewers8.13 <- typeOfReview8.13 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers8.13 <- nameReviewers8.13 [3:12]
+print(reviewers8.13)
+
+#Fourth Page
+url8.14 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview8.14 <- read_html(url8.14)
+
+nameReviewers8.14 <- typeOfReview8.14 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers8.14 <- nameReviewers8.14 [3:12]
+print(reviewers8.14)
+
+
+#Fifth Page
+url8.15 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview8.15 <- read_html(url8.15)
+
+nameReviewers8.15<- typeOfReview8.15 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers8.15<- nameReviewers8.15[3:12]
+print(reviewers8.15)
+
+df8.3<- bind_cols(TypeOfReviewers = c(reviewers8.11, reviewers8.12, reviewers8.13,reviewers8.14,reviewers8.15))
+print(df8.3)
+```
+EIGHT LINK (PRODUCT) - 40 PCS Sticky Traps - Date (50)
+```{r}
+#First Page
+url8.16 <- ("https://www.amazon.com.au/product-reviews/B09ZWTZHYK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview8.16 <- read_html(url8.16)
+
+nameReviewers8.16 <- typeOfReview8.16 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers8.16 <- nameReviewers8.16 [3:12]
+print(reviewers8.16)
+
+#Second Page
+url8.17 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview8.17 <- read_html(url8.17)
+
+nameReviewers8.17 <- typeOfReview8.17 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers8.17 <- nameReviewers8.17 [3:12]
+print(reviewers8.17)
+
+#Third Page
+url8.18 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview8.18 <- read_html(url8.18)
+
+nameReviewers8.18 <- typeOfReview8.18 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers8.18 <- nameReviewers8.18 [3:12]
+print(reviewers8.18)
+
+#Fourth Page
+url8.19 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview8.19 <- read_html(url8.19)
+
+nameReviewers8.19 <- typeOfReview8.19 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers8.19 <- nameReviewers8.19 [3:12]
+print(reviewers8.19)
+
+#Fifth Page
+url8.20<- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview8.20 <- read_html(url8.20)
+
+nameReviewers8.20 <- typeOfReview8.20 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers8.20 <- nameReviewers8.20 [3:12]
+print(reviewers8.20)
+
+df8.4 <- bind_cols(Date = c(reviewers8.16, reviewers8.17,reviewers8.18,reviewers8.19,reviewers8.20))
+print(df8.4)
+```
+EIGHT LINK (PRODUCT) - 40 PCS Sticky Traps - Ratings (50)
+```{r}
+#First Page
+url8.21 <- ("https://www.amazon.com.au/product-reviews/B09ZWTZHYK/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview8.21 <- read_html(url8.21)
+
+nameReviewers8.21 <- typeOfReview8.21 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers8.21 <- nameReviewers8.21 [3:12]
+print(reviewers8.21)
+
+#Second Page
+url8.22 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview8.22 <- read_html(url8.22)
+
+nameReviewers8.22 <- typeOfReview8.22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers8.22 <- nameReviewers8.22 [3:12]
+print(reviewers8.22)
+
+#Third Page
+url8.23 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview8.23 <- read_html(url8.23)
+
+nameReviewers8.23 <- typeOfReview8.23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers8.23 <- nameReviewers8.23 [3:12]
+print(reviewers8.23)
+
+
+#Fourth Page
+url8.24 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview8.24 <- read_html(url8.24)
+
+nameReviewers8.24 <- typeOfReview8.24 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers8.24 <- nameReviewers8.24 [3:12]
+print(reviewers8.24)
+
+
+#Fifth Page
+url8.25 <- ("https://www.amazon.com.au/GeeRic-Outdoor-Dual-Sided-Catcher-Mosquitos/product-reviews/B09ZWTZHYK/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview8.25 <- read_html(url8.25)
+
+nameReviewers8.25 <- typeOfReview8.25 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers8.25 <- nameReviewers8.25 [3:12]
+print(reviewers8.25)
+
+df8.5 <- bind_cols(Ratings = c(reviewers8.1, reviewers8.2, reviewers8.3,reviewers8.5,reviewers8.4))
+print(df8.5)
+
+eightDf <- data.frame(
+  Product = eightProd8.1,
+  NameOfReviewer = df8.1,
+  TitleOfReviews = df8.2,
+  TypeOfReview = df8.3,
+  Date = df8.4, 
+  Rating = df8.5
+)
+eightDf
+
+write.csv(eightDf, "eight_product.csv")
+read.csv("eight_product.csv")
+```
+
+
+
+NOTE: This link has only limited scrapable data hence why it only has 30 items.
+NINTH LINK (PRODUCT) - PALONE Electric Bug Zapper 3200V - Name of Reviewers (50)
+```{r}
+#First Page
+session9.1 <- session ("https://www.amazon.com.au/product-reviews/B0CNSZTJ2L/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers9.1 <- session9.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers9.1 <- nameReviewers9.1 [3:12]
+reviewers9.1
+
+#Second Page
+session9.2 <- session ("https://amazon.com.au/PALONE-Electric-Removable-Collection-Warehouse/product-reviews/B0CNSZTJ2L/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers9.2 <- session9.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers9.2 <- nameReviewers9.2 [3:12]
+reviewers9.2
+
+
+ninthProd9.1 <- products[[9]]
+ninthProd9.1
+
+ninthProd<- bind_cols(Product = c(ninthProd9.1))
+print(ninthProd)
+
+
+df9.1 <- bind_cols(NameOfReviewers = c(reviewers9.1, reviewers9.2))
+print(df9.1)
+```
+NINTH LINK (PRODUCT) - PALONE Electric Bug Zapper 3200V - Title of Reviews (50)
+```{r}
+#title of reviews
+#First Page
+url9.6 <- ("https://www.amazon.com.au/product-reviews/B0CNSZTJ2L/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+product9.6 <- read_html(url9.6)
+
+nameReviewers9.6 <- product9.6 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+
+reviewers9.6 <- nameReviewers9.6[1:13]
+
+nameReviewers9.6 <- as.character(reviewers9.6)
+nameReviewers9.6 <- gsub("\n", "", nameReviewers9.6)
+
+print(nameReviewers9.6)
+length(nameReviewers9.6)
+
+
+
+#Second Page
+url9.7 <- ("https://www.amazon.com.au/PALONE-Electric-Removable-Collection-Warehouse/product-reviews/B0CNSZTJ2L/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+product9.7 <- read_html(url9.7)
+
+nameReviewers9.7 <- product9.7 %>%
+  html_nodes("a.review-title") %>%
+  html_text()
+
+# Select all available reviewers (adjust if needed)
+reviewers9.7 <- nameReviewers9.7[1:length(nameReviewers9.7)]  # Select all
+
+nameReviewers9.7 <- as.character(nameReviewers9.7)
+nameReviewers9.7 <- gsub("\n", "", nameReviewers9.7)
+
+print(nameReviewers9.7)
+length(nameReviewers9.7)  # Print the actual number of reviewers extracted
+
+
+#binding the datas. 
+df9.2 <- bind_cols(TitleOfReviewers = c(nameReviewers9.6,nameReviewers9.7))
+print(df9.2)
+```
+NINTH LINK (PRODUCT) - PALONE Electric Bug Zapper 3200V - Type of Reviews (50)
+```{r}
+#Type of Reviews
+#First Page
+url9.8 <- ("https://www.amazon.com.au/product-reviews/B0CNSZTJ2L/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview9.8 <- read_html(url9.8)
+
+nameReviewers9.8 <- typeOfReview9.8 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers9.8 <- nameReviewers9.8 [3:12]
+print(reviewers9.8)
+
+
+#Second Page
+url9.9 <- ("https://www.amazon.com.au/PALONE-Electric-Removable-Collection-Warehouse/product-reviews/B0CNSZTJ2L/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview9.9 <- read_html(url9.9)
+
+nameReviewers9.9 <- typeOfReview9.9 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers9.9 <- nameReviewers9.9 [3:12]
+print(reviewers9.9)
+length(reviewers9.9)
+
+
+df9.3<- bind_cols(TypeOfReviewers = c(reviewers9.8, reviewers9.9))
+print(df9.3)
+```
+NINTH LINK (PRODUCT) - PALONE Electric Bug Zapper 3200V - Date (50)
+```{r}
+#First Page
+  url9.10 <- ("https://www.amazon.com.au/product-reviews/B0CNSZTJ2L/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
   
-productTypeReview <- products5[1:30]
-productTypeReview
+  typeOfReview9.10 <- read_html(url9.10)
+  
+  nameReviewers9.10 <- typeOfReview9.10 %>%
+    html_nodes("span.review-date") %>%
+    html_text()
+  
+  reviewers9.10 <- nameReviewers9.10 [3:12]
+  print(reviewers9.10)
+
+#Second Page
+url9.11 <- ("https://www.amazon.com.au/PALONE-Electric-Removable-Collection-Warehouse/product-reviews/B0CNSZTJ2L/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview9.11 <- read_html(url9.11)
+
+nameReviewers9.11 <- typeOfReview9.11 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers9.11 <- nameReviewers9.11 [3:12]
+print(reviewers9.11)
+
+
+df9.4 <- bind_cols(Date = c(reviewers9.10, reviewers9.11))
+print(df9.4)
+```
+NINTH LINK (PRODUCT) - PALONE Electric Bug Zapper 3200V - Ratings (50)
+```{r}
+#First Page
+url9.12 <- ("https://www.amazon.com.au/product-reviews/B0CNSZTJ2L/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview9.12 <- read_html(url9.12)
+
+nameReviewers9.12 <- typeOfReview9.12 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers9.12 <- nameReviewers9.12 [3:12]
+print(reviewers9.12)
+
+#Second Page
+url9.13 <- ("https://www.amazon.com.au/PALONE-Electric-Removable-Collection-Warehouse/product-reviews/B0CNSZTJ2L/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview9.13 <- read_html(url9.13)
+
+nameReviewers9.13 <- typeOfReview9.13 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers9.13 <- nameReviewers9.13 [3:12]
+print(reviewers9.13)
+
+
+df9.5 <- bind_cols(Ratings = c(reviewers9.12, reviewers9.13))
+print(df9.5)
+
+ninthDf <- data.frame(
+  Product = ninthProd9.1,
+  NameOfReviewer = df9.1,
+  TitleOfReviews = df9.2,
+  TypeOfReview = df9.3,
+  Date = df9.4,
+  Rating = df9.5
+)
+ninthDf
+
+write.csv(ninthDf, "ninth_product.csv")
+read.csv("ninth_product.csv")
+```
+
+
+
+
+TENTH LINK (PRODUCT) Stingmon 12 Pack Sticky Fruit Fly Fungus Gnat Traps Killer - Name of Reviewers (50)
+```{r}
+#First Page
+session10.1 <- session ("https://www.amazon.com.au/product-reviews/B07XLM4FWL/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+nameReviewers10.1 <- session10.1 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers10.1 <- nameReviewers10.1 [3:12]
+reviewers10.1
+
+#Second Page
+session10.2 <- session ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews")
+
+nameReviewers10.2 <- session10.2 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers10.2 <- nameReviewers10.2 [3:12]
+reviewers10.2
+
+#Third Page
+session10.3 <- session ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+nameReviewers10.3 <- session10.3 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers10.3 <- nameReviewers10.3 [3:12]
+reviewers10.3
+
+
+#Fourth Page
+session10.4 <- session("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+nameReviewers10.4 <- session10.4 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+reviewers10.4 <- nameReviewers10.4[3:12]
+reviewers10.4
+
+#Fifth Page
+session10.5 <- session("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+nameReviewers10.5 <- session10.5 %>%
+  html_nodes("span.a-profile-name") %>%
+  html_text()
+
+
+reviewers10.5 <- nameReviewers10.5[3:12]
+reviewers10.5
+
+tenthProd10.1 <- products[[10]]
+tenthProd10.1
+
+tenthProd<- bind_cols(Product = c(tenthProd10.1))
+print(tenthProd)
+
+
+df10.1 <- bind_cols(NameOfReviewers = c(reviewers10.1, reviewers10.2, reviewers10.3,reviewers10.4,reviewers10.5))
+print(df10.1)
+```
+TENTH LINK (PRODUCT) Stingmon 12 Pack Sticky Fruit Fly Fungus Gnat Traps Killer - Title of Reviewers (50)
+```{r}
+#title of reviews
+#First Page
+url10.6 <- ("https://www.amazon.com.au/product-reviews/B07XLM4FWL/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar")
+
+product10.6 <- read_html(url10.6)
+
+nameReviewers10.6 <- product10.6 %>%
+  html_nodes("span.a-size-base.review-title.a-color-base.review-title-content.a-text-bold") %>%  # Adjust selector if needed
+  html_text()
+
+# Select all available reviewers (adjust if needed)
+reviewers10.6 <- nameReviewers10.6[3:12]  
+
+nameReviewers10.6 <- as.character(nameReviewers10.6)
+nameReviewers10.6 <- gsub("\n", "", nameReviewers10.6)
+
+print(nameReviewers10.6)
+length(nameReviewers10.6)
+
+
+
+#Second Page
+url10.7<- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+product10.7 <- read_html(url10.7)
+
+nameReviewers10.7 <- product10.7 %>%
+  html_nodes("span.a-size-base.review-title.a-color-base.review-title-content.a-text-bold") %>%  
+  html_text() 
+
+reviewers10.7 <- nameReviewers10.7[3:15]  
+
+nameReviewers10.7 <- as.character(reviewers10.7)  
+nameReviewers10.7 <- gsub("\n", "", nameReviewers10.7)  
+
+print(nameReviewers10.7)
+length(nameReviewers10.7)
+
+# Third Page
+url10.8 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews")
+
+product10.8 <- read_html(url10.8)
+
+nameReviewers10.8 <- product10.8 %>%
+  html_nodes("span.a-size-base.review-title.a-color-base.review-title-content.a-text-bold") %>%
+  html_text()
+
+
+reviewers10.8 <- nameReviewers10.8[3:12]
+
+nameReviewers10.8 <- as.character(reviewers10.8)
+nameReviewers10.8 <- gsub("\n", "", nameReviewers10.8)
+
+print(nameReviewers10.8)
+length(nameReviewers10.8)
+
+# Fourth Page
+url10.9 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews")
+
+product10.9 <- read_html(url10.9)
+
+nameReviewers10.9 <- product10.9 %>%
+  html_nodes("span.a-size-base.review-title.a-color-base.review-title-content.a-text-bold") %>%
+  html_text()
+
+
+reviewers10.9 <- nameReviewers10.9[3:12]
+
+nameReviewers10.9 <- as.character(reviewers10.9)
+nameReviewers10.9 <- gsub("\n", "", nameReviewers10.9)
+
+print(nameReviewers10.9)
+length(nameReviewers10.9)
+
+
+
+#Fifth Page
+url10.10 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews")
+
+product10.10 <- read_html(url10.10)
+
+nameReviewers10.10 <- product10.10 %>%
+  html_nodes("span.a-size-base.review-title.a-color-base.review-title-content.a-text-bold") %>%  
+  html_text() 
+
+reviewers10.10 <- nameReviewers10.10[3:12]  
+
+nameReviewers10.10 <- as.character(nameReviewers10.10)  
+nameReviewers10.10 <- gsub("\n", "", nameReviewers10.10)  
+
+print(nameReviewers10.10)
+length(nameReviewers10.10)
+
+#binding the datas. 
+df10.2 <- bind_cols(TitleOfReviewers = c(nameReviewers10.6,nameReviewers10.7,nameReviewers10.8,nameReviewers10.9,nameReviewers10.10))
+print(df10.2)
+
+```
+TENTH LINK (PRODUCT) Stingmon 12 Pack Sticky Fruit Fly Fungus Gnat Traps Killer - Type of Reviewers (50)
+```{r}
+#Type of Reviews
+#First Page
+url10.11 <- ("https://www.amazon.com.au/product-reviews/B07XLM4FWL/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview10.11 <- read_html(url10.11)
+
+nameReviewers10.11 <- typeOfReview10.11 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers10.11 <- nameReviewers10.11 [3:12]
+print(reviewers10.11)
+
+
+#Second Page
+url10.12 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview10.12 <- read_html(url10.12)
+
+nameReviewers10.12 <- typeOfReview10.12 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers10.12 <- nameReviewers10.12 [3:12]
+print(reviewers10.12)
+
+#Third Page
+url10.13 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview10.13 <- read_html(url10.13)
+
+nameReviewers10.13 <- typeOfReview10.13 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers10.13 <- nameReviewers10.13 [3:12]
+print(reviewers10.13)
+
+#Fourth Page
+url10.14 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview10.14 <- read_html(url10.14)
+
+nameReviewers10.14 <- typeOfReview10.14 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers10.14 <- nameReviewers10.14 [3:12]
+print(reviewers10.14)
+
+
+#Fifth Page
+url10.15 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview10.15 <- read_html(url10.15)
+
+nameReviewers10.15<- typeOfReview10.15 %>%
+  html_nodes("span.a-size-mini.a-color-state.a-text-bold") %>%
+  html_text()
+
+reviewers10.15<- nameReviewers10.15[3:12]
+print(reviewers10.15)
+
+df10.3<- bind_cols(TypeOfReviewers = c(reviewers10.11, reviewers10.12, reviewers10.13,reviewers10.14,reviewers10.15))
+print(df10.3)
+```
+TENTH LINK (PRODUCT) Stingmon 12 Pack Sticky Fruit Fly Fungus Gnat Traps Killer - Date (50)
+```{r}
+#First Page
+url10.16 <- ("https://www.amazon.com.au/product-reviews/B07XLM4FWL/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview10.16 <- read_html(url10.16)
+
+nameReviewers10.16 <- typeOfReview10.16 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers10.16 <- nameReviewers10.16 [3:12]
+print(reviewers10.16)
+
+#Second Page
+url10.17 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview10.17 <- read_html(url10.17)
+
+nameReviewers10.17 <- typeOfReview10.17 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers10.17 <- nameReviewers10.17 [3:12]
+print(reviewers10.17)
+
+#Third Page
+url10.18 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview10.18 <- read_html(url10.18)
+
+nameReviewers10.18 <- typeOfReview10.18 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers10.18 <- nameReviewers10.18 [3:12]
+print(reviewers10.18)
+
+#Fourth Page
+url10.19 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview10.19 <- read_html(url10.19)
+
+nameReviewers10.19 <- typeOfReview10.19 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers10.19 <- nameReviewers10.19 [3:12]
+print(reviewers10.19)
+
+#Fifth Page
+url10.20<- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview10.20 <- read_html(url10.20)
+
+nameReviewers10.20 <- typeOfReview10.20 %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+reviewers10.20 <- nameReviewers10.20 [3:12]
+print(reviewers10.20)
+
+df10.4 <- bind_cols(Date = c(reviewers10.16, reviewers10.17,reviewers10.18,reviewers10.19,reviewers10.20))
+print(df10.4)
+```
+TENTH LINK (PRODUCT) Stingmon 12 Pack Sticky Fruit Fly Fungus Gnat Traps Killer - Rating (50)
+```{r}
+#First Page
+url10.21 <- ("https://www.amazon.com.au/product-reviews/B07XLM4FWL/ref=acr_dpx_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar") 
+
+typeOfReview10.21 <- read_html(url10.21)
+
+nameReviewers10.21 <- typeOfReview10.21 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers10.21 <- nameReviewers10.21 [3:12]
+print(reviewers10.21)
+
+#Second Page
+url10.22 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&filterByStar=five_star&pageNumber=2&reviewerType=all_reviews") 
+
+typeOfReview10.22 <- read_html(url10.22)
+
+nameReviewers10.22 <- typeOfReview10.22 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers10.22 <- nameReviewers10.22 [3:12]
+print(reviewers10.22)
+
+#Third Page
+url10.23 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_3?ie=UTF8&filterByStar=five_star&pageNumber=3&reviewerType=all_reviews") 
+
+typeOfReview10.23 <- read_html(url10.23)
+
+nameReviewers10.23 <- typeOfReview10.23 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers10.23 <- nameReviewers10.23 [3:12]
+print(reviewers10.23)
+
+
+#Fourth Page
+url10.24 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_4?ie=UTF8&filterByStar=five_star&pageNumber=4&reviewerType=all_reviews") 
+
+typeOfReview10.24 <- read_html(url10.24)
+
+nameReviewers10.24 <- typeOfReview10.24 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers10.24 <- nameReviewers10.24 [3:12]
+print(reviewers10.24)
+
+
+#Fifth Page
+url10.25 <- ("https://www.amazon.com.au/Stingmon-Pack-Sticky-Fruit-Fungus/product-reviews/B07XLM4FWL/ref=cm_cr_arp_d_paging_btm_5?ie=UTF8&filterByStar=five_star&pageNumber=5&reviewerType=all_reviews") 
+
+typeOfReview10.25 <- read_html(url10.25)
+
+nameReviewers10.25 <- typeOfReview10.25 %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text()
+
+reviewers10.25 <- nameReviewers10.25 [3:12]
+print(reviewers10.25)
+
+df10.5 <- bind_cols(Ratings = c(reviewers10.21, reviewers10.22, reviewers10.23, reviewers10.24, reviewers10.25))
+print(df10.5)
+
+tenthDf <- data.frame(
+  Product = tenthProd10.1,
+  NameOfReviewer = df10.1,
+  TitleOfReviews = df10.2,
+  TypeOfReview = df10.3,
+  Date = df10.4, 
+  Rating = df10.5
+)
+tenthDf
+
+write.csv(tenthDf, "tenth_product.csv")
+read.csv("tenth_product.csv")
 ```
 
 
